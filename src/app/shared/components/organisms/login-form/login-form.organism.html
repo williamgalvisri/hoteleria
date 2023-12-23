@@ -1,0 +1,7 @@
+<at-card>
+  <section [formGroup]="formGroup">
+    <ml-email-input [control]="'email'| getControl:formGroup" ></ml-email-input>
+    <ml-password-input [control]="'password'| getControl:formGroup"></ml-password-input>
+  </section>
+  <at-button fullWidth="full" [disabled]="!formGroup.valid" (click)="login()">Ingresar</at-button>
+</at-card>
