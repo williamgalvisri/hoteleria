@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
+import { Firestore, collectionData, collection, } from '@angular/fire/firestore';
 
 
 @Component({
@@ -13,11 +14,14 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  constructor(){}
+
+  constructor(){
+  }
 
   ngOnInit(): void {
     initFlowbite();
     this.hasDarkMode();
+
   }
 
   private hasDarkMode() {

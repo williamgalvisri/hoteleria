@@ -1,0 +1,5 @@
+<section [formGroup]="createHotelFormGroup">
+  <ml-text-input [id]="'name'" [control]="'name'| getControl:createHotelFormGroup"  [label]="'Nombre del hotel'"></ml-text-input>
+  <ml-text-area-input [id]="'description'" [control]="'description'| getControl:createHotelFormGroup"  [label]="'Descripción'"></ml-text-area-input>
+  <at-button [fullWidth]="'full'" (click)="createHotel()">Crear</at-button>
+</section>

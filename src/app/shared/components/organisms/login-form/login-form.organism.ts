@@ -37,8 +37,9 @@ const MODULE = [
 })
 
 export class LoginFormOrganism implements OnInit {
-  formGroup!: FormGroup;
+  loginFormGroup!: FormGroup;
   optionsUserType: OptionGroupModel[] = []
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -56,7 +57,7 @@ export class LoginFormOrganism implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
+    this.loginFormGroup = this.formBuilder.group({
       email: ['william@gmail.com', [Validators.required, Validators.email]],
       password: ['12345678', [Validators.required, Validators.minLength(8)]],
       userType: [UserTypeEnum.AGENT]
@@ -64,8 +65,8 @@ export class LoginFormOrganism implements OnInit {
   }
 
   login() {
-    const values: LoginForm = this.formGroup.value;
-    console.log(this.formGroup.value)
+    const values: LoginForm = this.loginFormGroup.value;
+    console.log(this.loginFormGroup.value)
     if(UserTypeEnum.AGENT === values.userType) {
       // navigate to admin component
       this.router.navigate(['/admin'])

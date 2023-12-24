@@ -1,12 +1,12 @@
 <section class="mb-4">
-  <at-label [for]="'email'">Correo electronico</at-label>
+  <at-label [for]="'email'" [classesAditional]="'mb-2'">Correo electronico</at-label>
   <at-input id="email" [type]="'email'" [control]="control"></at-input>
   <!-- {{this.control.hasError('email')}} -->
   @if (hasEmailError) {
-    <span class="mt-2 text-sm text-red-600 dark:text-red-500">Lo siento no es correcto el formato del correo, digita uno valido.</span>
+    <span class="mt-2 error-message">Lo siento no es correcto el formato del correo, digita uno valido.</span>
   }
 
   @if (hasRequiredError && control.touched) {
-    <span class="mt-2 text-sm text-red-600 dark:text-red-500">El email es requerido.</span>
+    <span class="mt-2 error-message">Email es requerido.</span>
   }
 </section>

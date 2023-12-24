@@ -2,24 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-export type InputAtomTypes = 'text' | 'password' | 'email' | 'number';
-
 @Component({
   standalone: true,
-  selector: 'at-input',
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
-  templateUrl: './input.atom.html',
-  styleUrl: './input.atom.css'
+  selector: 'at-text-area',
+  templateUrl: 'text-area.atom.html',
+  styleUrl: './text-area.atom.css'
 })
 
-export class InputAtom implements OnInit {
+export class TextAreaAtom implements OnInit {
   @Input() id: string = '';
-  @Input() name: string = '';
-  @Input() placeholder: string = '';
-  @Input() type: InputAtomTypes = 'text';
+  @Input() placeholder = '';
+  @Input() rows: number = 4;
   @Input() classesAditional: string = '';
-  @Input() control: FormControl  =  new FormControl()
-
+  @Input() control: FormControl = new FormControl()
   constructor() { }
 
   ngOnInit() { }

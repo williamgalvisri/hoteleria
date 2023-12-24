@@ -5,7 +5,7 @@
       <at-button type="alternative">Quiero agregar un Hotel</at-button>
     </section>
   } @else {
-    <at-button [fullWidth]="'full'">Agregar Hotel</at-button>
+    <at-button [fullWidth]="'full'" (click)="openCreateHotelModal()">Agregar Hotel</at-button>
   }
 
   <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4">
@@ -27,3 +27,10 @@
     }
   </section>
 </div>
+<!-- Modals -->
+<ml-modal #modal_create_hotel title="Crear Hotel" [id]="'modal-create-hotel'" (onCloseEmmiter)="closeCreateHoterModal()">
+ <or-create-hotel></or-create-hotel>
+</ml-modal>
+
+
+

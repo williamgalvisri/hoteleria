@@ -14,6 +14,7 @@ export class ButtonAtom implements OnInit {
   @Input() size: 'xs' | 'sm' | 'base' = 'base';
   @Input() fullWidth: 'full' | 'none' = 'none';
   @Input() disabled: boolean =  false;
+  @Input() id: string = ''
   constructor() { }
 
   ngOnInit() { }

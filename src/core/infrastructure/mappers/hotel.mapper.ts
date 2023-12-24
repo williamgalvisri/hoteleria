@@ -8,14 +8,16 @@ export class HotelMapper {
     return new Hotel({
       id: param?.id ?? '',
       name: param.name,
-      description: param.description
+      description: param.description,
+      active: param.activate
     })
   }
 
   static mapTo(param: CreateHotelPayload): HotelDto {
     return {
       name: param.name,
-      description: param.description
+      description: param.description,
+      activate: true
     }
   }
 }

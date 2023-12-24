@@ -1,0 +1,9 @@
+<section class="mb-4">
+  <at-label [for]="id" [classesAditional]="'mb-2'">{{label}}</at-label>
+  <at-text-area [id]="id" [placeholder]="placeholder"[control]="control"></at-text-area>
+  <!-- {{this.control.hasError('email')}} -->
+
+  @if (hasRequiredError && control.touched) {
+    <span class="mt-2 error-message">{{label}} es requerido.</span>
+  }
+</section>
