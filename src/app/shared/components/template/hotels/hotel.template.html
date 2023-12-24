@@ -1,0 +1,29 @@
+<div class="p-4">
+  @if (hotels.length === 0) {
+    <section class="flex flex-col items-center">
+      <at-label [size]="'2xl'">Parece que no haz creado hoteles, empieza ahora</at-label>
+      <at-button type="alternative">Quiero agregar un Hotel</at-button>
+    </section>
+  } @else {
+    <at-button [fullWidth]="'full'">Agregar Hotel</at-button>
+  }
+
+  <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4">
+    @for (hotel of hotels; track $index) {
+      <at-card [width]="'xs'">
+        <div class="w-full flex flex-col justify-center items-left">
+          <section class="flex items-center mb-4">
+            <at-label [size]="'lg'">{{hotel.name}}</at-label>
+            <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span>
+          </section>
+          <p class="mb-6 text-gray-500 dark:text-gray-400">{{hotel.description}}</p>
+          <div>
+            <at-button type="alternative" [fullWidth]="'full'" [size]="'xs'">Habitaciones</at-button>
+            <at-button [fullWidth]="'full'" [size]="'xs'">Editar</at-button>
+            <at-button [type]="'danger'" [fullWidth]="'full'" [size]="'xs'">Desactivar</at-button>
+          </div>
+        </div>
+      </at-card>
+    }
+  </section>
+</div>

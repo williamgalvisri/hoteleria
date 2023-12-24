@@ -11,6 +11,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class ButtonAtom implements OnInit {
   @Input() type: 'primary' | 'alternative' | 'success' | 'danger' | 'warnning' = 'primary';
+  @Input() size: 'xs' | 'sm' | 'base' = 'base';
   @Input() fullWidth: 'full' | 'none' = 'none';
   @Input() disabled: boolean =  false;
   constructor() { }

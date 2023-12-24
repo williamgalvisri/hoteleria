@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { HotelRepository } from '@repositories/hotel/hotel.repository';
-import { RepositoryModule } from '@repositories/repository.module';
-import { InputAtom } from '@shared/components/atoms/input/input.atom';
-import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
-import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { initFlowbite } from 'flowbite';
 
 
@@ -23,6 +17,15 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     initFlowbite();
+    this.hasDarkMode();
+  }
+
+  private hasDarkMode() {
+    if (localStorage['color-theme'] === 'dark' ) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
 
 

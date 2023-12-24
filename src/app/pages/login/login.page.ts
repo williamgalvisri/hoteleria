@@ -1,14 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RepositoryModule } from '@repositories/repository.module';
+import { FormBuilder } from '@angular/forms';
 import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
-import { CardAtom } from '@shared/components/atoms/card/card.atom';
-import { InputAtom } from '@shared/components/atoms/input/input.atom';
-import { EmailMolecule } from '@shared/components/molecules/email-input/email-input.molecule';
-import { PasswordInputMolecule } from '@shared/components/molecules/password-input/password-input.molecule';
+import { OptionAtom } from '@shared/components/atoms/option/option.atom';
 import { LoginFormOrganism } from '@shared/components/organisms/login-form/login-form.organism';
-import { GetFormControlPipe } from '@shared/pipes/get-form-control.pipe';
 
 
 const COMPONENTS = [
@@ -36,7 +30,7 @@ export class LoginPage implements OnInit {
     this.hasDarkMode()
   }
 
-  hasDarkMode() {
+  private hasDarkMode() {
     if (localStorage['color-theme'] === 'dark' ) {
       this.darkMode = false;
       document.documentElement.classList.add('dark');

@@ -1,0 +1,3 @@
+.grid-cols-auto-fit-xs {
+  grid-template-columns: repeat(auto-fit,minmax(20rem,1fr));
+}

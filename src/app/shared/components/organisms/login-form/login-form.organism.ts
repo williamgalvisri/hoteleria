@@ -1,17 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
 import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { InputAtom } from '@shared/components/atoms/input/input.atom';
+import { OptionAtom } from '@shared/components/atoms/option/option.atom';
 import { EmailMolecule } from '@shared/components/molecules/email-input/email-input.molecule';
+import { OptionGroupModel } from '@shared/components/molecules/option-group/option-group.model';
+import { OptionGroupMolecule } from '@shared/components/molecules/option-group/option-group.molecule';
 import { PasswordInputMolecule } from '@shared/components/molecules/password-input/password-input.molecule';
 import { GetFormControlPipe } from '@shared/pipes/get-form-control.pipe';
+import { LoginForm, UserTypeEnum } from './login-form.model';
 
 const COMPONENTS = [
   InputAtom,
   ButtonAtom,
   CardAtom,
+  OptionGroupMolecule,
   EmailMolecule,
   PasswordInputMolecule,
   GetFormControlPipe
@@ -32,16 +38,40 @@ const MODULE = [
 
 export class LoginFormOrganism implements OnInit {
   formGroup!: FormGroup;
-  constructor(private formBuilder: FormBuilder) { }
+  optionsUserType: OptionGroupModel[] = []
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+  ) {
+    this.optionsUserType = [{
+      value: UserTypeEnum.TRAVELER,
+      name: 'userType',
+      label: 'Viajero'
+    },
+    {
+      value: UserTypeEnum.AGENT,
+      name: 'userType',
+      label: 'Agente'
+    }]
+  }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      email: ['william@gmail.com', [Validators.required, Validators.email]],
+      password: ['12345678', [Validators.required, Validators.minLength(8)]],
+      userType: [UserTypeEnum.AGENT]
     });
   }
 
   login() {
+    const values: LoginForm = this.formGroup.value;
     console.log(this.formGroup.value)
+    if(UserTypeEnum.AGENT === values.userType) {
+      // navigate to admin component
+      this.router.navigate(['/admin'])
+    } else if(UserTypeEnum.TRAVELER === values.userType)  {
+      // navigate to reserva
+      this.router.navigate(['/reserva'])
+    }
   }
 }

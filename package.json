@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev": "ng serve",
     "build": "ng build",
-    "dev": "docker compose up dev",
+    "dev:docker": "docker compose up dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
