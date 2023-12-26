@@ -2,5 +2,11 @@
   <ml-text-input [id]="'name'" [control]="'name'| getControl:hotelFormGroup"  [label]="'Nombre del hotel'"></ml-text-input>
   <ml-text-input [id]="'city'" [control]="'city'| getControl:hotelFormGroup"  [label]="'Ciudad'"></ml-text-input>
   <ml-text-area-input [id]="'description'" [control]="'description'| getControl:hotelFormGroup"  [label]="'Descripción'"></ml-text-area-input>
-  <at-button [fullWidth]="'full'" [disabled]="!hotelFormGroup.valid" (click)="this.formData.id ? updateHotel() : createHotel()">{{this.formData.id ? 'Actualizar Hotel' : 'Crear Hotel'}}</at-button>
+  <at-button
+    [fullWidth]="'full'"
+    [disabled]="!hotelFormGroup.valid"
+    [loading]="isLoading"
+    (click)="this.formData.id ? updateHotel() : createHotel()">
+    {{this.formData.id ? 'Actualizar Hotel' : 'Crear Hotel'}}
+  </at-button>
 </section>

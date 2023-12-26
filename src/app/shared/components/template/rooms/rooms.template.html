@@ -2,9 +2,16 @@
   @if (rooms.length === 0) {
     <section class="flex flex-col items-center">
       <at-label classesAditional="mb-2" [size]="'2xl'">Quieres registrar habitaciones para el Hotel</at-label>
-      <at-button type="alternative">Quiero agregar una habitación</at-button>
+      <at-button type="alternative" (click)="openFormRoomModal()">Quiero agregar una habitación</at-button>
     </section>
   } @else {
-    <at-button [fullWidth]="'full'">Agregar Habitación</at-button>
+    <at-button [fullWidth]="'full'" (click)="openFormRoomModal()">Agregar Habitación</at-button>
   }
 </div>
+
+
+<!-- Modals -->
+<ml-modal [title]="'Crear Habitación'" [id]="'modal-form-room'" (onCloseEmmiter)="closeFormRoomModal()">
+  <!-- <or-form-hotel [formData]="hotel"></or-form-hotel> -->
+</ml-modal>
+

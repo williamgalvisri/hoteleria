@@ -1,6 +1,9 @@
 const HOTELS = 'hotels';
 
+const ROOMS = 'rooms';
+
 
 export {
-  HOTELS
+  HOTELS,
+  ROOMS
 }

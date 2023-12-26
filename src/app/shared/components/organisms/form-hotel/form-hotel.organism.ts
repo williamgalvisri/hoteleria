@@ -13,7 +13,7 @@ import { Hotel } from '@models/hotel.model';
 import { ModalService } from '@shared/components/atoms/modal/service/modal.service';
 import { ID_MODAL_FORM_HOTEL } from '@shared/components/utils/modal-keys.const';
 import { Modal } from 'flowbite';
-import { tap } from 'rxjs';
+import { pipe, tap } from 'rxjs';
 
 const COMPONENTS = [
   TextMolecule,
@@ -41,6 +41,7 @@ export class FormHotelOrganism implements OnInit, OnChanges, AfterViewInit {
   id: string = '';
   hotelFormGroup!: FormGroup;
   formHotelInstanceModal!: Modal;
+  isLoading: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private hotelRepository: HotelRepository,
@@ -78,8 +79,15 @@ export class FormHotelOrganism implements OnInit, OnChanges, AfterViewInit {
       city: values.city,
       description: values.description
     }
+    this.isLoading = true;
     // TODO: execute messahe suscces and error
-    this.hotelRepository.createHotel(payload).subscribe()
+    this.hotelRepository.createHotel(payload)
+    .pipe(
+      tap(() => {
+        this.isLoading = false;
+        this.formHotelInstanceModal.hide();
+      })
+    ).subscribe()
   }
 
   updateHotel() {
@@ -91,9 +99,11 @@ export class FormHotelOrganism implements OnInit, OnChanges, AfterViewInit {
       city: values.city,
       description: values.description
     }
+    this.isLoading = true;
     // TODO: execute messahe suscces and error
     this.hotelRepository.updateHotel(payload).pipe(
       tap(() => {
+        this.isLoading = false;
         this.formHotelInstanceModal.hide();
       })
     ).subscribe()

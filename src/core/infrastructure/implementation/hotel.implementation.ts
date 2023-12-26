@@ -6,8 +6,6 @@ import { Hotel } from '@models/hotel.model';
 import { HotelRepository } from '@repositories/hotel/hotel.repository';
 import { Observable, of } from 'rxjs';
 
-
-
 @Injectable({providedIn: 'root'})
 export class HotelImplementation implements HotelRepository {
 
