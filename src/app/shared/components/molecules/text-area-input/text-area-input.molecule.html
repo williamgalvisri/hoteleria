@@ -1,5 +1,5 @@
 <section class="mb-4">
-  <at-label [for]="id" [classesAditional]="'mb-2'">{{label}}</at-label>
+  <at-label [for]="id" [classesAditional]="'mb-2'">{{label}} <span class="text-red-700 dark:text-red-600" *ngIf="isRequired">*</span></at-label>
   <at-text-area [id]="id" [placeholder]="placeholder"[control]="control"></at-text-area>
   <!-- {{this.control.hasError('email')}} -->
 

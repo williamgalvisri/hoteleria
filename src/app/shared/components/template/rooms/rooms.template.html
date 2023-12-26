@@ -1,0 +1,10 @@
+<div class="p-4">
+  @if (rooms.length === 0) {
+    <section class="flex flex-col items-center">
+      <at-label classesAditional="mb-2" [size]="'2xl'">Quieres registrar habitaciones para el Hotel</at-label>
+      <at-button type="alternative">Quiero agregar una habitación</at-button>
+    </section>
+  } @else {
+    <at-button [fullWidth]="'full'">Agregar Habitación</at-button>
+  }
+</div>

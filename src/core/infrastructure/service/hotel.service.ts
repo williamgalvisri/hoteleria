@@ -1,85 +1,115 @@
 import { Injectable, inject } from '@angular/core';
 import { HotelDto } from '@infrastructure/dto/hotel.dto';
 import { HotelMapper } from '@infrastructure/mappers/hotel.mapper';
-import { CreateHotelPayload } from '@infrastructure/payload/hotel.payload';
+import { CreateHotelPayload, UpdateHotelPayload } from '@infrastructure/payload/hotel.payload';
 import { Hotel } from '@models/hotel.model';
 import { Observable, catchError, from, map, of } from 'rxjs';
-import { Firestore, collection, addDoc, getDocs, CollectionReference, FirestoreDataConverter, doc, getDoc} from '@angular/fire/firestore';
-import { RequestInterface } from '@infrastructure/base/request.model';
+import { Firestore, collection, addDoc, getDocs, CollectionReference, FirestoreDataConverter, doc, getDoc, updateDoc, onSnapshot, query, collectionData, Unsubscribe} from '@angular/fire/firestore';
+import { RequestInterface, StatusResponse } from '@infrastructure/base/request.model';
 import { HOTELS } from '@infrastructure/base/collections.const';
 
 @Injectable({providedIn: 'root'})
 export class HotelService {
   firestore: Firestore = inject(Firestore);
-  private collectionConverter: FirestoreDataConverter<any, Hotel> = {
-    toFirestore(data) {
-      return data
-    },
-    fromFirestore(snapshot, option) {
-      console.log(snapshot);
-      const data = {id: snapshot.id, ...snapshot.data(option)} as HotelDto;
-      return data;
-    }
-  };
+  unsubscribeHotelCollection!: Unsubscribe;
 
   constructor() { }
 
+  listenerHotels$(): Observable<Hotel[]>  {
+    const collectionRef = collection(this.firestore, HOTELS);
+    return new Observable((observable) => {
+      this.unsubscribeHotelCollection = onSnapshot(query(collectionRef), (snapshots, ) => {
+        const docs = snapshots.docs.map(snapshot => HotelMapper.mapFrom({id: snapshot.id, ...snapshot.data() as HotelDto}))
+        observable.next(docs)
+      })
+    })
+  }
+
+
   createHotel(payload: CreateHotelPayload): Observable<RequestInterface<any>> {
     const dto = HotelMapper.mapTo(payload);
-    const response = from(addDoc(collection(this.firestore, HOTELS), dto))
-      .pipe(map<any, RequestInterface<any>>(() => ({status: 'sucess'})))
-    return response
+    return from(addDoc(collection(this.firestore, HOTELS), dto))
+      .pipe(
+        map<any, RequestInterface<any>>(() => ({ response: {}, status: StatusResponse.SUCCESS})),
+        catchError((error) => {
+          return of({ response: {}, status: 'error' }) as Observable<RequestInterface<any>>
+        })
+      )
   }
 
   getByIdHotel(id: string): Observable<RequestInterface<Hotel>> {
-    console.log(id)
     // Get reference
     const collectionRef = doc(this.firestore, HOTELS, id);
     // mapping response
-    const response = from(getDoc(collectionRef)).pipe(
+    return from(getDoc(collectionRef)).pipe(
       map(
         (snapshot) => {
-          console.log(snapshot)
           const mapFromfirebase = HotelMapper.mapFrom(
             ({
               id: snapshot.id,
               ...snapshot.data()
             }) as HotelDto
           )
-          return {response: mapFromfirebase, status: 'sucess'} as RequestInterface<Hotel>
+          return {response: mapFromfirebase, status: StatusResponse.SUCCESS} as RequestInterface<Hotel>
         }
       ),
       catchError((error) => {
         return of({ status: 'error' }) as Observable<RequestInterface<Hotel>>
       })
     );
-    return response;
   }
+
+
 
   getAllHotels(): Observable<RequestInterface<Hotel[]>> {
     // Get reference
     const collectionRef = collection(this.firestore, HOTELS);
-
-     // mapping response
-     const response = from(getDocs(collectionRef)).pipe(
+    // mapping response
+    return from(getDocs(collectionRef)).pipe(
       map(
         (snapshots) => {
           const docs = snapshots.docs.map(snapshot => HotelMapper.mapFrom({id: snapshot.id, ...snapshot.data() as HotelDto}))
-          return {response: docs, status: 'sucess'} as RequestInterface<Hotel[]>
+          return {response: docs, status: StatusResponse.SUCCESS} as RequestInterface<Hotel[]>
         }
       ),
       catchError((error) => {
-        return of({ status: 'error' }) as Observable<RequestInterface<Hotel[]>>
+        return of({ response: {}, status: StatusResponse.ERROR }) as Observable<RequestInterface<Hotel[]>>
       })
     );
+  }
 
-    // const response = [] as HotelDto[];
-    return response
+  updateHotel(payload: UpdateHotelPayload): Observable<RequestInterface<any>> {
+    const collectionRef = doc(this.firestore, HOTELS, payload.id);
+    const dto = HotelMapper.mapToUpdate(payload);
+    const method = updateDoc(collectionRef, dto);
+
+    return from(method).pipe(
+      map<any, RequestInterface<any>>(() => ({ response: {}, status: StatusResponse.SUCCESS})),
+      catchError((error) => {
+        return of({ response: {}, status: StatusResponse.ERROR }) as Observable<RequestInterface<any>>
+      })
+    )
   }
-  activateOrDeactivateHotel(id: string): Observable<RequestInterface<any>> {
-    console.log('deactivate or activate', id)
-    return of({
-      status: 'sucess'
-    })
+
+  activateOrDeactivateHotel(id: string, previewState: boolean): Observable<RequestInterface<any>> {
+    // Get reference
+    const collectionRef = doc(this.firestore, HOTELS, id);
+    const method = updateDoc(collectionRef, {
+      activate: !previewState
+    });
+    return from(method).pipe(
+        map<any, RequestInterface<any>>(() => ({ response: {}, status: StatusResponse.SUCCESS})),
+        catchError((error) => {
+          return of({ response: {}, status: StatusResponse.ERROR }) as Observable<RequestInterface<any>>
+        })
+    );
   }
+
+
+  // ----------------------------- helpers ----------------------
+  unsubscribeSnapshot() {
+    this.unsubscribeHotelCollection()
+  }
+
+
 }

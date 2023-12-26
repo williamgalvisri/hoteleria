@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
+import { BreadcrumAtom } from '@shared/components/atoms/breadcrum/breadcrum.atom';
 
 @Component({
   standalone: true,
   selector: 'pg-admin',
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, BreadcrumAtom],
   templateUrl: './admin.page.html',
   styleUrl: './admin.page.css'
 })

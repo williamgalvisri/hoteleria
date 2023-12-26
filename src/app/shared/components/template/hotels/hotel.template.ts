@@ -1,63 +1,115 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Hotel } from '@models/hotel.model';
+import { HotelRepository } from '@repositories/hotel/hotel.repository';
 import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
 import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { LabelAtom } from '@shared/components/atoms/label/label.atom';
 import { ModalMolecule } from '@shared/components/atoms/modal/modal.molecule';
 import { ModalService } from '@shared/components/atoms/modal/service/modal.service';
-import { TextAreaMolecule } from '@shared/components/molecules/text-area-input/text-area-input.molecule';
-import { TextMolecule } from '@shared/components/molecules/text-input/text-input.molecule';
-import { CreateHotelOrganism } from '@shared/components/organisms/create-hotel/create-hotel.organism';
+import { FormHotelOrganism } from '@shared/components/organisms/form-hotel/form-hotel.organism';
+import { ID_MODAL_FORM_HOTEL } from '@shared/components/utils/modal-keys.const';
 import { Modal } from 'flowbite';
+import { Subscription, tap } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'tp-hotel',
-  imports: [ButtonAtom, LabelAtom, CardAtom, ModalMolecule, CreateHotelOrganism, CommonModule],
-  providers:[
-    {
-      provide: 'id', useValue: 'recaptcha-container'
-    }
-  ],
+  imports: [ButtonAtom, LabelAtom, CardAtom, ModalMolecule, FormHotelOrganism, CommonModule],
+  providers:[],
   templateUrl: './hotel.template.html',
   styleUrl: './hotel.template.css'
 })
 
-export class HotelTemplate implements OnInit, AfterViewInit {
-  hotels: Hotel[] = [
-    {
-      name: 'Hotel 1',
-      id: '1',
-      description: 'Este es un hotel maravilloso con vista al mar',
-      active: false,
-    },
-    {
-      name: 'Hotel 1',
-      id: '1',
-      description: 'Este es un hotel maravilloso con vista al mar',
-      active: true,
-    },
-  ];
-  createHotelInstanceModal!: Modal;
-  constructor(private modalService: ModalService) {
+export class HotelTemplate implements OnInit, AfterViewInit, OnDestroy {
+  hotels: Hotel[] = [];
+  hotel: Hotel = new Hotel();
+  loadingState: { edit: boolean,  activateOrDeactivate: boolean};
+  formHotelInstanceModal!: Modal;
+
+
+  subscriptionListenerHotels!: Subscription;
+  constructor(
+    private modalService: ModalService,
+    private hotelRepository: HotelRepository,
+    private router: Router
+  ) {
+    this.loadingState = {
+      edit: false,
+      activateOrDeactivate: false
+    };
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getHotels();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionListenerHotels?.unsubscribe();
+    this.hotelRepository.unsubscribeSnapshot();
+  }
 
   ngAfterViewInit(): void {
-    const ID_MODAL = 'modal-create-hotel';
-    this.createHotelInstanceModal = this.modalService.createInstanceModal(ID_MODAL, {closable: false});
-    this.createHotelInstanceModal.show()
+    this.formHotelInstanceModal = this.modalService.createInstanceModal(ID_MODAL_FORM_HOTEL, {closable: false});
+  }
+
+
+  // ------------------- Fetch Methods ---------------------
+  /**
+   * Fetches a list of hotels from the data source and stores them locally.
+   *
+   * @description
+   *   - Calls the `getAllHotels()` method on the `hotelRepository` to retrieve hotel data.
+   *   - Subscribes to the resulting Observable to handle the asynchronous response.
+   *   - Assigns the received hotel data to the `hotels` member variable.
+   *
+   * @example
+   *   ```typescript
+   *   this.getHotels(); // Fetch hotels and store them in this.hotels
+   *   console.log(this.hotels); // Access the fetched hotels
+   *   ```
+   */
+  getHotels() {
+    this.subscriptionListenerHotels = this.hotelRepository.listenerHotels$().subscribe((hotels) => {
+      this.hotels = hotels;
+    })
+  }
+
+  editHotel(id: string) {
+    // Beggin search data
+    this.loadingState.edit = true;
+    this.hotelRepository.getByIdHotel(id).pipe(
+      tap(({response}) => {
+        // off loading state and open modal
+        this.loadingState.edit = false;
+        this.hotel = response;
+        this.formHotelInstanceModal.show();
+      })
+    ).subscribe()
+  }
+
+  deactivateOrActivate(id: string, previewState: boolean) {
+    this.loadingState.activateOrDeactivate = true;
+    this.hotelRepository.activateOrDeactivateHotel(id, previewState).pipe(
+      tap(() => {
+        // off loading state
+        this.loadingState.activateOrDeactivate = false;
+      })
+    ).subscribe()
+  }
+
+  goToRooms(id: string) {
+    this.router.navigate([`admin/hotels/${id}`]);
   }
 
   // -------------------- Modal Methods --------------------
-  openCreateHotelModal() {
-    this.createHotelInstanceModal.show()
+  openFormHotelModal() {
+    this.hotel = new Hotel();
+    this.formHotelInstanceModal.show();
   }
 
-  closeCreateHoterModal() {
-    this.createHotelInstanceModal.hide()
+  closeFormHotelModal() {
+    this.formHotelInstanceModal.hide();
   }
 }

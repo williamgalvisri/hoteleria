@@ -1,5 +1,5 @@
-<div [ngClass]="['w-full p-12 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700', width === 'base' ? 'min-w-[24rem] max-w-sm' : '', width === 'xs' ? '' : '' ]">
-  <div class="space-y-6">
+<div [ngClass]="['card', width === 'base' ? 'min-w-[24rem] max-w-sm' : '', width === 'xs' ? '' : '', classesAditional]">
+  <div class="space-y-6 h-full">
     <ng-content></ng-content>
   </div>
 </div>

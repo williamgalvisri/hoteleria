@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { RequestInterface } from '@infrastructure/base/request.model';
-import { CreateHotelPayload } from '@infrastructure/payload/hotel.payload';
+import { CreateHotelPayload, UpdateHotelPayload } from '@infrastructure/payload/hotel.payload';
 import { HotelService } from '@infrastructure/service/hotel.service';
 import { Hotel } from '@models/hotel.model';
 import { HotelRepository } from '@repositories/hotel/hotel.repository';
@@ -27,7 +27,19 @@ export class HotelImplementation implements HotelRepository {
     return this.hotelService.getAllHotels()
   }
 
-  activateOrDeactivateHotel(id: string): Observable<RequestInterface<any>> {
-    return this.hotelService.activateOrDeactivateHotel(id)
+  activateOrDeactivateHotel(id: string, statePreview: boolean): Observable<RequestInterface<any>> {
+    return this.hotelService.activateOrDeactivateHotel(id, statePreview)
+  }
+
+  updateHotel(payload: UpdateHotelPayload): Observable<RequestInterface<any>> {
+    return this.hotelService.updateHotel(payload)
+  }
+
+  listenerHotels$(): Observable<Hotel[]> {
+    return this.hotelService.listenerHotels$();
+  }
+
+  unsubscribeSnapshot(): void {
+    this.hotelService.listenerHotels$();
   }
 }

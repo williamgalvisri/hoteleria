@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { InputAtom, InputAtomTypes } from '@shared/components/atoms/input/input.atom';
@@ -5,7 +6,7 @@ import { LabelAtom } from '@shared/components/atoms/label/label.atom';
 
 @Component({
   standalone: true,
-  imports: [LabelAtom, InputAtom],
+  imports: [LabelAtom, InputAtom, CommonModule],
   selector: 'ml-email-input',
   templateUrl: './email-input.molecule.html',
   styleUrl: './email-input.molecule.html'
@@ -20,6 +21,10 @@ export class EmailMolecule implements OnInit {
 
   get hasRequiredError() {
     return this.control.hasError('required');
+  }
+
+  get isRequired() {
+    return this.control.hasValidator(Validators.required)
   }
 
   constructor() {

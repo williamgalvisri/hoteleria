@@ -1,26 +1,37 @@
 <div class="p-4">
   @if (hotels.length === 0) {
     <section class="flex flex-col items-center">
-      <at-label [size]="'2xl'">Parece que no haz creado hoteles, empieza ahora</at-label>
+      <at-label classesAditional="mb-2" [size]="'2xl'">Parece que no haz creado hoteles, empieza ahora</at-label>
       <at-button type="alternative">Quiero agregar un Hotel</at-button>
     </section>
   } @else {
-    <at-button [fullWidth]="'full'" (click)="openCreateHotelModal()">Agregar Hotel</at-button>
+    <at-button [fullWidth]="'full'" (click)="openFormHotelModal()">Agregar Hotel</at-button>
   }
 
-  <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4">
+  <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
     @for (hotel of hotels; track $index) {
-      <at-card [width]="'xs'">
-        <div class="w-full flex flex-col justify-center items-left">
-          <section class="flex items-center mb-4">
-            <at-label [size]="'lg'">{{hotel.name}}</at-label>
-            <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span>
-          </section>
-          <p class="mb-6 text-gray-500 dark:text-gray-400">{{hotel.description}}</p>
+      <!--TODO: this is a organism -->
+      <at-card [width]="'xs'" [classesAditional]="'h-[20rem] max-w-[20rem]'">
+        <div class="w-full flex flex-col justify-between items-left h-full">
+          <div class="flex flex-col">
+            <section class="flex items-center justify-between">
+              <section class="w-[12.5rem]">
+                <at-label [size]="'lg'" classesAditional="truncate">{{hotel.name}}</at-label>
+              </section>
+                <!-- <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
+                <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span> -->
+                <span class="relative flex h-3.5 w-3.5 cursor-pointer" (click)="deactivateOrActivate(hotel.id, hotel.active)">
+                <span *ngIf="hotel.active" [ngClass]="['animate-ping absolute inline-flex opacity-75  w-3.5 h-3.5  rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
+                <span [ngClass]="['relative inline-flex  w-3.5 h-3.5 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span>
+              </span>
+            </section>
+            <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
+            <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4 " [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
+          </div>
           <div>
-            <at-button type="alternative" [fullWidth]="'full'" [size]="'xs'">Habitaciones</at-button>
-            <at-button [fullWidth]="'full'" [size]="'xs'">Editar</at-button>
-            <at-button [type]="'danger'" [fullWidth]="'full'" [size]="'xs'">Desactivar</at-button>
+            <at-button type="alternative" [fullWidth]="'full'" [size]="'xs'" (click)="goToRooms(hotel.id)">Habitaciones</at-button>
+            <at-button [fullWidth]="'full'" [size]="'xs'" (click)="editHotel(hotel.id)">Editar</at-button>
+            <!-- <at-button [type]="hotel.active ? 'danger' : 'success'" [fullWidth]="'full'" [size]="'xs'" (click)="deactivateOrActivate(hotel.id, hotel.active)">{{ hotel.active ? 'Desactivar' : 'Activar'}}</at-button> -->
           </div>
         </div>
       </at-card>
@@ -28,8 +39,8 @@
   </section>
 </div>
 <!-- Modals -->
-<ml-modal #modal_create_hotel title="Crear Hotel" [id]="'modal-create-hotel'" (onCloseEmmiter)="closeCreateHoterModal()">
- <or-create-hotel></or-create-hotel>
+<ml-modal [title]="hotel.id ? 'Editar Hotel' : 'Crear Hotel'" [id]="'modal-form-hotel'" (onCloseEmmiter)="closeFormHotelModal()">
+ <or-form-hotel [formData]="hotel"></or-form-hotel>
 </ml-modal>
 
 
