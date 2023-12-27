@@ -11,3 +11,7 @@
 .error-message {
   @apply text-sm text-red-600 dark:text-red-500;
 }
+
+.grid-cols-auto-fit-xs {
+  grid-template-columns: repeat(auto-fit,minmax(20rem, 0fr));
+}

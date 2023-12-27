@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-export type InputAtomTypes = 'text' | 'password' | 'email' | 'number';
+export type InputAtomTypes = 'text' | 'password' | 'email' | 'number' | 'date';
 
 @Component({
   standalone: true,

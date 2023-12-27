@@ -1,7 +1,7 @@
 <div class="p-4">
   @if (hotels.length === 0) {
     <section class="flex flex-col items-center">
-      <at-label classesAditional="mb-2" [size]="'2xl'">Parece que no haz creado hoteles, empieza ahora</at-label>
+      <at-label classesAditional="mb-2" [size]="'2xl'">Parece que no tienes registrado hoteles, empieza ahora</at-label>
       <at-button type="alternative">Quiero agregar un Hotel</at-button>
     </section>
   } @else {
@@ -11,7 +11,7 @@
   <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
     @for (hotel of hotels; track $index) {
       <!--TODO: this is a organism -->
-      <at-card [width]="'xs'" [classesAditional]="'h-[20rem] max-w-[20rem]'">
+      <at-card [width]="'xs'" [classesAditional]="'h-[20rem] w-[20rem]'">
         <div class="w-full flex flex-col justify-between items-left h-full">
           <div class="flex flex-col">
             <section class="flex items-center justify-between">

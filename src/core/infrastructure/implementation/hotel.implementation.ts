@@ -33,9 +33,14 @@ export class HotelImplementation implements HotelRepository {
     return this.hotelService.updateHotel(payload)
   }
 
+  getCityAvailables(): Observable<RequestInterface<string[]>> {
+    return this.hotelService.getCityAvailables()
+  }
+
   listenerHotels$(): Observable<Hotel[]> {
     return this.hotelService.listenerHotels$();
   }
+
 
   unsubscribeSnapshot(): void {
     this.hotelService.listenerHotels$();

@@ -3,5 +3,5 @@ export interface HotelDto {
   name: string;
   description: string;
   city: string;
-  activate: boolean;
+  active: boolean;
 }

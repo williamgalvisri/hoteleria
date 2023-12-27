@@ -10,5 +10,6 @@ export abstract class HotelRepository{
   abstract getAllHotels(): Observable<RequestInterface<Hotel[]>>;
   abstract activateOrDeactivateHotel(id: string, previewState: boolean): Observable<RequestInterface<any>>;
   abstract listenerHotels$(): Observable<Hotel[]>;
+  abstract getCityAvailables(): Observable<RequestInterface<string[]>>
   abstract unsubscribeSnapshot(): void;
 }

@@ -19,7 +19,8 @@ export class RoomService {
   setHotelIdentifier(id: string): Observable<boolean> {
     return from(getDoc(doc(this.firestore, HOTELS, id))).pipe(map((snapshot) => {
       if(snapshot.exists()) {
-        this.idHotel = id
+        this.idHotel = id;
+        console.log(this.idHotel)
       }
       return snapshot.exists()
     }));
@@ -30,7 +31,6 @@ export class RoomService {
   }
 
   listenerRooms$(): Observable<Room[]>  {
-    console.log(this.getPathRoom());
     const collectionRef = collection(this.firestore, this.getPathRoom());
     return new Observable((observable) => {
       this.unsubscribeRoomCollection = onSnapshot(query(collectionRef), (snapshots, ) => {
@@ -43,6 +43,9 @@ export class RoomService {
 
   createRoom(payload: CreateRoomPayload): Observable<RequestInterface<any>> {
     const dto = RoomMapper.mapTo(payload);
+
+    // Set the number of people possible by the type of rooms before to create
+
     return from(addDoc(collection(this.firestore, this.getPathRoom()), dto))
       .pipe(
         map<any, RequestInterface<any>>(() => ({ response: {}, status: StatusResponse.SUCCESS})),
@@ -110,7 +113,7 @@ export class RoomService {
     // Get reference
     const collectionRef = doc(this.firestore, this.getPathRoom(), id);
     const method = updateDoc(collectionRef, {
-      activate: !previewState
+      active: !previewState
     });
     return from(method).pipe(
         map<any, RequestInterface<any>>(() => ({ response: {}, status: StatusResponse.SUCCESS})),
@@ -119,7 +122,6 @@ export class RoomService {
         })
     );
   }
-
 
   // ----------------------------- helpers ----------------------
   unsubscribeSnapshot() {

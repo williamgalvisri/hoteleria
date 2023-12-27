@@ -1,0 +1,13 @@
+<section [formGroup]="roomFormGroup">
+  <ml-select-input [label]="'Tipo de habitacion'" [placeholder]="'Selecciona un tipo de habitación'" [options]="roomTypeOptions" [control]="'roomType' | getControl:roomFormGroup"></ml-select-input>
+  <ml-select-input [label]="'Impuesto'" [placeholder]="'Selecciona un tipo de habitación'" [options]="taxOptions" [control]="'tax' | getControl:roomFormGroup"></ml-select-input>
+  <ml-number-input [label]="'Valor'" [control]="'cost' | getControl:roomFormGroup"></ml-number-input>
+  <ml-text-input [label]="'Ubicacion'" [control]="'location' | getControl:roomFormGroup"></ml-text-input>
+  <at-button
+    [fullWidth]="'full'"
+    [loading]="isLoading"
+    (click)="this.formData.id ? updateRoom() : createRoom()"
+    [disabled]="!roomFormGroup.valid">
+    {{this.formData.id ? 'Actualizar Habitación' : 'Crear Habitación'}}
+  </at-button>
+</section>

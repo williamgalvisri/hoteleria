@@ -1,7 +1,7 @@
 <section class="mb-4">
   <at-label [for]="'email'" [classesAditional]="'mb-2'">Correo electronico <span class="text-red-700 dark:text-red-600" *ngIf="isRequired">*</span></at-label>
   <at-input id="email" [type]="'email'" [control]="control"></at-input>
-  <!-- {{this.control.hasError('email')}} -->
+
   @if (hasEmailError) {
     <span class="mt-2 error-message">Lo siento no es correcto el formato del correo, digita uno valido.</span>
   }

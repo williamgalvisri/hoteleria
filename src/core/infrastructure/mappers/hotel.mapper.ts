@@ -9,7 +9,7 @@ export class HotelMapper {
       id: param?.id ?? '',
       name: param.name,
       description: param.description,
-      active: param.activate,
+      active: param.active,
       city: param.city,
     })
   }
@@ -19,11 +19,11 @@ export class HotelMapper {
       name: param.name,
       description: param.description,
       city: param.city,
-      activate: true
+      active: true
     }
   }
 
-  static mapToUpdate(param: UpdateHotelPayload): Omit<HotelDto, 'activate'> {
+  static mapToUpdate(param: UpdateHotelPayload): Omit<HotelDto, 'active'> {
     return {
       name: param.name,
       description: param.description,

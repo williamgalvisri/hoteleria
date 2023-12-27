@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { BreadcrumAtom } from '@shared/components/atoms/breadcrum/breadcrum.atom';
 
 @Component({
@@ -13,9 +13,13 @@ import { BreadcrumAtom } from '@shared/components/atoms/breadcrum/breadcrum.atom
 
 export class AdminPage implements OnInit {
   isOpenSidebar: boolean = false;
-  constructor(private router: Router) {}
+  pathActive: string = '';
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
 
-  ngOnInit() { }
+  }
+
+  ngOnInit() {
+  }
 
   logout() {
     this.router.navigate(['/login'])

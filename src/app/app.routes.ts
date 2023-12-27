@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AdminPage } from '@pages/admin/admin.page';
 import { LoginPage } from '@pages/login/login.page';
+import { ReservaPage } from '@pages/reserva/reserva.page';
 import { HotelTemplate } from '@shared/components/template/hotels/hotel.template';
 import { ReservasTemplate } from '@shared/components/template/reservas/reservas.template';
 import { RoomsTemplate } from '@shared/components/template/rooms/rooms.template';
@@ -9,6 +10,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginPage,
+  },
+  {
+    path: 'reserva',
+    component: ReservaPage
   },
   {
     path: 'admin',

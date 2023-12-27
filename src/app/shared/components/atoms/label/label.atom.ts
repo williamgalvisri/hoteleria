@@ -10,7 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class LabelAtom implements OnInit {
   @Input() for: string = '';
-  @Input() size: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' = 'sm';
+  @Input() size: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '4xl' = 'sm';
   @Input() classesAditional: string = '';
 
   constructor() { }

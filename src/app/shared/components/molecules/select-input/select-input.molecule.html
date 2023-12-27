@@ -1,6 +1,6 @@
 <section class="mb-4">
   <at-label [for]="id" [classesAditional]="'mb-2'">{{label}} <span class="text-red-700 dark:text-red-600" *ngIf="isRequired">*</span></at-label>
-  <at-text-area [id]="id" [placeholder]="placeholder"[control]="control"></at-text-area>
+  <at-select [id]="id" [options]="options" [placeholder]="placeholder" [selected]="selected" [control]="control"></at-select>
 
 
   @if (hasRequiredError && control.touched) {

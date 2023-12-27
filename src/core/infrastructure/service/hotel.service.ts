@@ -95,7 +95,7 @@ export class HotelService {
     // Get reference
     const collectionRef = doc(this.firestore, HOTELS, id);
     const method = updateDoc(collectionRef, {
-      activate: !previewState
+      active: !previewState
     });
     return from(method).pipe(
         map<any, RequestInterface<any>>(() => ({ response: {}, status: StatusResponse.SUCCESS})),
@@ -104,6 +104,25 @@ export class HotelService {
         })
     );
   }
+
+  getCityAvailables(): Observable<RequestInterface<string[]>> {
+     // Get reference
+     const collectionRef = collection(this.firestore, HOTELS);
+     return from(getDocs(collectionRef)).pipe(
+      map(
+        (snapshots) => {
+          const docs = snapshots.docs.map(snapshot => HotelMapper.mapFrom({id: snapshot.id, ...snapshot.data() as HotelDto}))
+          // unique cities registered
+          const cities: string[] = docs.map(x => x.city).filter((value, index, array) => array.indexOf(value) === index);
+          return {response: cities, status: StatusResponse.SUCCESS} as RequestInterface<string[]>
+        }
+      ),
+      catchError((error) => {
+        return of({ response: {}, status: StatusResponse.ERROR }) as Observable<RequestInterface<string[]>>
+      })
+    );
+  }
+
 
 
   // ----------------------------- helpers ----------------------

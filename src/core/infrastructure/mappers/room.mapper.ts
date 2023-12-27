@@ -11,6 +11,8 @@ export class RoomMapper {
       roomType: param.room_type,
       tax: param.tax,
       active: param.active,
+      location: param.location,
+      numberPersonaAllow: param.number_persona_allow
     })
   }
 
@@ -19,7 +21,9 @@ export class RoomMapper {
       room_type: param.roomType,
       cost: param.cost,
       tax: param.tax,
-      active: true
+      location: param.location,
+      number_persona_allow: param.numberPersonaAllow,
+      active: true,
     }
   }
 
@@ -28,6 +32,8 @@ export class RoomMapper {
       id: param.id,
       room_type: param.roomType,
       cost: param.cost,
+      location: param.location,
+      number_persona_allow: param.numberPersonaAllow,
       tax: param.tax,
     }
   }

@@ -1,11 +1,11 @@
 <button
   type="button"
-  [disabled]="disabled"
+  [disabled]="disabled || loading"
   [id]="id"
   [ngClass]="[
     'button', 'button--'+type,
     fullWidth == 'full' ? 'w-full' : '',
-    disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+    (disabled || loading) ? 'cursor-not-allowed' : 'cursor-pointer',
     'button--'+size
   ]">
   @if(loading) {

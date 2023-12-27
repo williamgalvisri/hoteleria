@@ -1,16 +1,16 @@
 export interface CreateRoomPayload {
-  idHotel: string,
   cost: number;
   roomType: string;
   tax: string;
-  active: boolean;
+  location: string;
+  numberPersonaAllow: number;
 }
 
 export interface UpdateRoomPayload {
-  idHotel: string
   id: string;
   cost: number;
   roomType: string;
   tax: string;
-  active: boolean;
+  location: string;
+  numberPersonaAllow: number;
 }

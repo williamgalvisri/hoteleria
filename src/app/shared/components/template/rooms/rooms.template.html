@@ -1,17 +1,45 @@
 <div class="p-4">
   @if (rooms.length === 0) {
     <section class="flex flex-col items-center">
-      <at-label classesAditional="mb-2" [size]="'2xl'">Quieres registrar habitaciones para el Hotel</at-label>
+      <at-label classesAditional="mb-2" [size]="'2xl'">No tienes habitaciones registradas, empiza ahora</at-label>
       <at-button type="alternative" (click)="openFormRoomModal()">Quiero agregar una habitación</at-button>
     </section>
   } @else {
     <at-button [fullWidth]="'full'" (click)="openFormRoomModal()">Agregar Habitación</at-button>
   }
+
+  <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
+    @for (room of rooms; track $index) {
+      <!--TODO: this is a organism -->
+      <at-card [width]="'xs'" [classesAditional]="'h-[16rem] w-[20rem]'">
+        <div class="w-full flex flex-col justify-between items-left h-full">
+          <div class="flex flex-col">
+            <section class="flex items-center justify-between">
+              <section class="w-[12.5rem]">
+                <at-label [size]="'lg'" classesAditional="truncate">{{room.location}}</at-label>
+              </section>
+                <span class="relative flex h-3.5 w-3.5 cursor-pointer" (click)="deactivateOrActivate(room.id, room.active)">
+                <span *ngIf="room.active" [ngClass]="['animate-ping absolute inline-flex opacity-75  w-3.5 h-3.5  rounded-full', room.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
+                <span [ngClass]="['relative inline-flex  w-3.5 h-3.5 rounded-full', room.active ? 'bg-green-400' : 'bg-red-400']"></span>
+              </span>
+            </section>
+            <span class="text-gray-500 dark:text-gray-400 text-xs">{{room.roomType | getTextFromOptions:typeRoomOptions}}</span>
+            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt-4">Precio: {{ room.cost | currency:'$'}}</span>
+            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Impuesto: {{ room.tax | getTextFromOptions:taxOptions }}</span>
+          </div>
+          <div>
+            <at-button [fullWidth]="'full'" [size]="'xs'" (click)="editRoom(room.id)">Editar</at-button>
+            <!-- <at-button [type]="hotel.active ? 'danger' : 'success'" [fullWidth]="'full'" [size]="'xs'" (click)="deactivateOrActivate(hotel.id, hotel.active)">{{ hotel.active ? 'Desactivar' : 'Activar'}}</at-button> -->
+          </div>
+        </div>
+      </at-card>
+    }
+  </section>
 </div>
 
 
 <!-- Modals -->
-<ml-modal [title]="'Crear Habitación'" [id]="'modal-form-room'" (onCloseEmmiter)="closeFormRoomModal()">
-  <!-- <or-form-hotel [formData]="hotel"></or-form-hotel> -->
+<ml-modal [title]="room.id ? 'Editar Habitación' : 'Crear Habitación'" [id]="'modal-form-room'" (onCloseEmmiter)="closeFormRoomModal()">
+  <or-form-room [formData]="room"></or-form-room>
 </ml-modal>
 
