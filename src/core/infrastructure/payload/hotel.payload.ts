@@ -11,3 +11,10 @@ export interface UpdateHotelPayload {
   description: string;
   city: string;
 }
+
+export interface FiltersHotelPayload {
+  city: string;
+  initDate: Date;
+  endDate: Date;
+  numberPersonaAllow: number;
+}

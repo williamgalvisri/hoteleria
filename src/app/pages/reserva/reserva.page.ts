@@ -45,6 +45,14 @@ export class ReservaPage implements OnInit, AfterViewInit {
   ngOnInit() {
     this.setFormData()
     this.getCities()
+    this.hotelRepository.applyFilters({
+      city: 'Soledad',
+      numberPersonaAllow: 1,
+      initDate: new Date(),
+      endDate: new Date()
+    }).subscribe(({response}) => {
+      console.log(response);
+    })
   }
 
   setFormData(){
@@ -60,9 +68,9 @@ export class ReservaPage implements OnInit, AfterViewInit {
 
   getCities() {
     this.hotelRepository.getCityAvailables().subscribe(({response}) => {
-      this.citiesOptions = response.map(c => ({
-        value: c,
-        text: c
+      this.citiesOptions = response.map(city => ({
+        value: city,
+        text: city
       }))
     })
   }
