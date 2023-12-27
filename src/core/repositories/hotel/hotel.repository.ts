@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 import { Hotel } from "@models/hotel.model";
-import { CreateHotelPayload, UpdateHotelPayload } from "@infrastructure/payload/hotel.payload"
+import { CreateHotelPayload, FiltersHotelPayload, UpdateHotelPayload } from "@infrastructure/payload/hotel.payload"
 import { RequestInterface } from "@infrastructure/base/request.model";
 
 export abstract class HotelRepository{
@@ -11,5 +11,6 @@ export abstract class HotelRepository{
   abstract activateOrDeactivateHotel(id: string, previewState: boolean): Observable<RequestInterface<any>>;
   abstract listenerHotels$(): Observable<Hotel[]>;
   abstract getCityAvailables(): Observable<RequestInterface<string[]>>
+  abstract applyFilters(filter: FiltersHotelPayload): Observable<RequestInterface<Hotel[]>>
   abstract unsubscribeSnapshot(): void;
 }

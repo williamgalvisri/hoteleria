@@ -5,4 +5,5 @@
     <ml-option-group [options]="optionsUserType" [control]="'userType'| getControl:loginFormGroup"></ml-option-group>
   </section>
   <at-button fullWidth="full" [disabled]="!loginFormGroup.valid" (click)="login()">Ingresar</at-button>
+  <at-button [type]="'alternative'" fullWidth="full" [disabled]="!loginFormGroup.valid" (click)="goToReserva()">Reservar</at-button>
 </at-card>

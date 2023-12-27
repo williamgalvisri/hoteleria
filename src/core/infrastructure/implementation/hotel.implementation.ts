@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { RequestInterface } from '@infrastructure/base/request.model';
-import { CreateHotelPayload, UpdateHotelPayload } from '@infrastructure/payload/hotel.payload';
+import { CreateHotelPayload, FiltersHotelPayload, UpdateHotelPayload } from '@infrastructure/payload/hotel.payload';
 import { HotelService } from '@infrastructure/service/hotel.service';
 import { Hotel } from '@models/hotel.model';
 import { HotelRepository } from '@repositories/hotel/hotel.repository';
@@ -41,6 +41,9 @@ export class HotelImplementation implements HotelRepository {
     return this.hotelService.listenerHotels$();
   }
 
+  applyFilters(filter: FiltersHotelPayload): Observable<RequestInterface<Hotel[]>> {
+    return this.hotelService.applyFilters(filter)
+  }
 
   unsubscribeSnapshot(): void {
     this.hotelService.listenerHotels$();

@@ -11,6 +11,7 @@ export class HotelMapper {
       description: param.description,
       active: param.active,
       city: param.city,
+      rooms: param?.rooms ?? []
     })
   }
 

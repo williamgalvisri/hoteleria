@@ -66,7 +66,6 @@ export class LoginFormOrganism implements OnInit {
 
   login() {
     const values: LoginForm = this.loginFormGroup.value;
-    console.log(this.loginFormGroup.value)
     if(UserTypeEnum.AGENT === values.userType) {
       // navigate to admin component
       this.router.navigate(['/admin'])
@@ -74,5 +73,9 @@ export class LoginFormOrganism implements OnInit {
       // navigate to reserva
       this.router.navigate(['/reserva'])
     }
+  }
+
+  goToReserva(){
+    this.router.navigate(['reserva'])
   }
 }
