@@ -27,9 +27,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/flowbite-datepicker/dist/js/datepicker-full.min.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
