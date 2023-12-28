@@ -1,0 +1,24 @@
+<section>
+  <div [formGroup]="guestFormGroup" class="grid grid-cols-2 gap-2">
+    <ml-select-input [label]="'Tipo de Identificación'" [placeholder]="'Selecciona un tipo de documento'" [options]="documentTypeOptions" [control]="'typeDocument' | getControl:guestFormGroup"></ml-select-input>
+    <ml-number-input [label]="'Numero de documento'" [control]="'documentNumber' | getControl:guestFormGroup"></ml-number-input>
+    <ml-text-input [label]="'Nombre completo'" [control]="'fullName' | getControl:guestFormGroup"></ml-text-input>
+    <ml-number-input [label]="'Telefono'" [control]="'phone' | getControl:guestFormGroup"></ml-number-input>
+    <ml-email-input [control]="'email'| getControl:guestFormGroup" ></ml-email-input>
+    <ml-date-input [label]="'Fecha de nacimiento'" [control]="'birthDay' | getControl:guestFormGroup"></ml-date-input>
+    <ml-select-input [label]="'Genero'" [placeholder]="'Selecciona un genero'" [options]="sexTypeOptions" [control]="'gender' | getControl:guestFormGroup"></ml-select-input>
+  </div>
+  <at-button
+    [fullWidth]="'full'"
+    [loading]="isLoading"
+    (click)="actionPersonForm(!formData.fullName ? 'create' : 'edit' )"
+    [disabled]="!guestFormGroup.valid">
+    {{!formData.fullName ? 'Agregar Huesped' : 'Editar Huesped'}}
+  </at-button>
+</section>
+
+<!-- <ml-modal [title]="'Formulario de Reserva'" [id]="'modal-form-person'">
+  <or-form-reserva></or-form-reserva>
+</ml-modal> -->
+
+

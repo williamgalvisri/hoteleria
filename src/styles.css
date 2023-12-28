@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @tailwind base;
+:root {
+  --primary: rebeccapurple;
+  --secondary: cornflowerblue;
+}
 @tailwind components;
 @tailwind utilities;
 
@@ -14,4 +18,29 @@
 
 .grid-cols-auto-fit-xs {
   grid-template-columns: repeat(auto-fit,minmax(20rem, 0fr));
+}
+
+
+
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1c64f2;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #1c64f2;
+  border-radius: 8px;
+  border: 0px solid transparent;
 }

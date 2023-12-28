@@ -1,0 +1,55 @@
+<section class="text-center flex flex-col h-screen  overflow-y-auto">
+  <div class="px-6 pb-4">
+    <section [formGroup]="filterFormGroup" class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-12 grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-4">
+      <div class="flex items-center">
+          <span class="inter-text">desde</span>
+          <div class="w-full">
+            <at-input [type]="'date'" id="init-date" [control]="'initDate' | getControl:filterFormGroup" classesAditional="w-full"></at-input>
+          </div>
+          <span class="inter-text">a</span>
+          <div class="w-full">
+            <at-input [type]="'date'" id="end-date" [control]="'endDate' | getControl:filterFormGroup"></at-input>
+          </div>
+      </div>
+      <div class="flex items-center">
+        <span class="inter-text">para</span>
+        <div class="w-full">
+          <at-select [options]="allowPersonOption" [control]="'allowPerson' | getControl:filterFormGroup" [placeholder]="'Cantidad de personas'"></at-select>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <span class="inter-text">en</span>
+        <div class="w-full">
+          <at-select [options]="citiesOptions" [control]="'city' | getControl:filterFormGroup" [placeholder]="'Selecciona el lugar'"></at-select>
+        </div>
+      </div>
+      <div>
+        <at-button [classesAditional]="'mb-0 ml-0'" [fullWidth]="'full'" [disabled]="!filterFormGroup.valid" [loading]="isLoadigFilter" (click)="applyFilter()">Buscar</at-button>
+      </div>
+    </section>
+  </div>
+  <section class="flex-1">
+    <section class="py-4 px-6">
+      @if (hotels.length > 0) {
+        <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Selecciona un hotel para reservar.</p>
+        @for (hotel of hotels; track $index) {
+          <at-card width="xs" [classesAditional]="'min-h-10rem max-h-12rem mb-2'">
+            <section class="grid grid-cols-1">
+              <section class="flex flex-col justify-start items-start">
+                <at-label [size]="'xl'" [classesAditional]="'hover:cursor-pointer hover:underline'" (click)="goToFormReserva(hotel)">{{hotel.name}}</at-label>
+                <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
+                <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4 " [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
+              </section>
+            </section>
+          </at-card>
+        }
+      } @else {
+        @if(!trySearchHotel) {
+          <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">🔎 Intenta aplicar los filtros para ver si encontramos algun lugar que se amolde a tus necesidades.</p>
+        } @else {
+          <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">😞 Lo sentimos no encontramos resultado con lo que intentas buscar, intenta más tarde.</p>
+        }
+      }
+    </section>
+  </section>
+</section>

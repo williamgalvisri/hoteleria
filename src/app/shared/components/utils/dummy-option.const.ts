@@ -31,4 +31,31 @@ const TAX_OPTION: OptionType[] = [
   },
 ]
 
-export { TYPE_ROOM_OPTION, TAX_OPTION }
+const DOCUMENT_TYPE_OPTION: OptionType[] = [
+  {
+    text: 'Cedula de ciudadania',
+    value: 'cc',
+  },
+  {
+    text: 'Pasaporte',
+    value: 'passaport',
+  },
+];
+
+const SEX_OPTION: OptionType[] = [
+  {
+    text: 'Masculino',
+    value: 'M',
+  },
+  {
+    text: 'Femenino',
+    value: 'F',
+  },
+  {
+    text: 'Otro',
+    value: 'O',
+  },
+];
+
+
+export { TYPE_ROOM_OPTION, TAX_OPTION, DOCUMENT_TYPE_OPTION, SEX_OPTION }

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { OptionType } from '@shared/components/atoms/select/model/select.model';
 
 @Pipe({

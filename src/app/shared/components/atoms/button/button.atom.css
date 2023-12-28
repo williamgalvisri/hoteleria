@@ -1,5 +1,5 @@
 .button {
-  @apply font-medium rounded-lg me-2 mb-2;
+  @apply font-medium rounded-lg;
 }
 
 .button--xs {

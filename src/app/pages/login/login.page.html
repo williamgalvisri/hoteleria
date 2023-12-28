@@ -1,4 +1,4 @@
 <section class="container-login">
-    <at-button type="alternative" (click)="activateDarkMode(darkMode)">{{darkMode ? 'SWITCH TO DARK 🌑' :  'SWITCH TO LIGTH ☀️'}}</at-button>
+    <at-button type="alternative" [classesAditional]="'mb-2'" (click)="activateDarkMode(darkMode)">{{darkMode ? 'SWITCH TO DARK 🌑' :  'SWITCH TO LIGTH ☀️'}}</at-button>
     <or-login-form></or-login-form>
 </section>

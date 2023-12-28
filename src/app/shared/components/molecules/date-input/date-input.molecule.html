@@ -1,0 +1,9 @@
+<section class="mb-4">
+  <at-label [for]="id" [classesAditional]="'mb-2'">{{label}} <span class="text-red-700 dark:text-red-600" *ngIf="isRequired">*</span></at-label>
+  <at-input [id]="id" [type]="'date'" [control]="control"></at-input>
+
+
+  @if (hasRequiredError && control.touched) {
+    <span class="mt-2 error-message">{{label}} es requerido.</span>
+  }
+</section>

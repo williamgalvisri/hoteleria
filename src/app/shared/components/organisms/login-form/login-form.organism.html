@@ -4,6 +4,6 @@
     <ml-password-input [control]="'password'| getControl:loginFormGroup"></ml-password-input>
     <ml-option-group [options]="optionsUserType" [control]="'userType'| getControl:loginFormGroup"></ml-option-group>
   </section>
-  <at-button fullWidth="full" [disabled]="!loginFormGroup.valid" (click)="login()">Ingresar</at-button>
+  <at-button fullWidth="full" [classesAditional]="'mb-2'" [disabled]="!loginFormGroup.valid" (click)="login()">Ingresar</at-button>
   <at-button [type]="'alternative'" fullWidth="full" [disabled]="!loginFormGroup.valid" (click)="goToReserva()">Reservar</at-button>
 </at-card>
