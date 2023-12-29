@@ -18,7 +18,6 @@ export class RoomService {
 
   setHotelIdentifier(id: string): Observable<boolean> {
     return from(getDoc(doc(this.firestore, HOTELS, id))).pipe(map((snapshot) => {
-      console.log(snapshot.exists())
       if(snapshot.exists()) {
         this.idHotel = id;
       }

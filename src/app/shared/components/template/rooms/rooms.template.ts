@@ -75,6 +75,7 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getHotels() {
+    // Verify if exist id hotel. if not return to hotels
     this.subscriptionListenerRooms = this.activatedRoute.params
     .pipe(
       switchMap((param) => {
@@ -123,8 +124,8 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToReservas(id: string) {
-    this.breadcrumService.setIdBreadCrum(id, 'idRoom');
-    this.router.navigate([`admin/hotels/${this.idHotel}/${id}/reservas`])
+    this.breadcrumService.setIdBreadCrum(this.idHotel, 'idHotel');
+    this.router.navigate([`admin/${this.idHotel}/rooms/${id}`])
   }
 
 

@@ -20,8 +20,14 @@ export class ReservaImplementation implements ReservaRepository {
     return this.reservaService.createReserva(payload)
   }
 
+  setRoomIdentifier(id: string, idHotel: string): Observable<boolean> {
+    return this.reservaService.setRoomIdentifier(id, idHotel);
+  }
 
   getByDocumentNumberReserva(documentNumber: number): Observable<RequestInterface<Reserva[]>> {
     return this.reservaService.getByDocumentNumberReserva(documentNumber)
+  }
+  getAllReservas(): Observable<RequestInterface<Reserva[]>> {
+    return this.reservaService.getAllReservas()
   }
 }

@@ -45,13 +45,11 @@ export const routes: Routes = [
         path:'hotels/:id',
         component: RoomsTemplate,
         data: { breadcrumbs: [{title: 'Hoteles', path: 'admin/hotels'}, {title: 'Habitaciones', path: ''}] },
-        children: [
-          {
-            path:':id/reservas',
-            component: ReservaTemplate,
-            data: { breadcrumbs: [{title: 'Hoteles', path: 'admin/hotels'}, {title: 'Habitaciones', path: 'admin/hotels/[idRoom]'}, {title: 'Reservas', path: ''}] },
-          }
-        ]
+      },
+      {
+        path:':idHotel/rooms/:id',
+        component: ReservasTemplate,
+        data: { breadcrumbs: [{title: 'Hoteles', path: 'admin/hotels'}, {title: 'Habitaciones', path: 'admin/hotels/[idHotel]'}, {title: 'Reservas', path: ''}] },
       },
       {
         path: '',

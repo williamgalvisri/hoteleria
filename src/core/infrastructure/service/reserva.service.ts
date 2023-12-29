@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, from, map, of, switchMap, tap } from 'rxjs';
-import { Firestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnapshot, query, Unsubscribe, where} from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnapshot, query, Unsubscribe, where, DocumentData, QuerySnapshot} from '@angular/fire/firestore';
 import { RequestInterface, StatusResponse } from '@infrastructure/base/request.model';
 import { HOTELS, RESERVA, ROOMS } from '@infrastructure/base/collections.const';
 import { Reserva } from '@models/reserva.model';
@@ -12,13 +12,24 @@ import { RoomDto } from '@infrastructure/dto/room.dto';
 
 @Injectable({providedIn: 'root'})
 export class ReservaService {
-  private idHotel: string = '';
+  private idRoom: string = '';
   firestore: Firestore = inject(Firestore);
 
   constructor() { }
 
   getPathRoom(idHotel: string) {
     return `${HOTELS}/${idHotel}/${ROOMS}`
+  }
+
+
+
+  setRoomIdentifier(id: string, idHotel: string): Observable<boolean> {
+    return from(getDoc(doc(this.firestore, this.getPathRoom(idHotel), id))).pipe(map((snapshot) => {
+      if(snapshot.exists()) {
+        this.idRoom = id;
+      }
+      return snapshot.exists()
+    }));
   }
 
 
@@ -35,13 +46,26 @@ export class ReservaService {
       )
   }
 
+  getAllReservas(): Observable<RequestInterface<Reserva[]>>{
+    // Get reference
+    const collectionRef = query(collection(this.firestore, RESERVA), where('room', '==', this.idRoom))
+    // encapsule observable promise
+    const observableSnapshot = from(getDocs(collectionRef));
+
+    return this.getAllReservasMap(observableSnapshot)
+  }
+
   getByDocumentNumberReserva(documentNumber: number): Observable<RequestInterface<Reserva[]>> {
     // Get reference
     const collectionRef = collection(this.firestore, RESERVA)
     const queryReserva = query(collectionRef, where('document_number_array', 'array-contains', documentNumber));
+    // encapsule observable promise
+    const observableSnapshot = from(getDocs(queryReserva));
+    return this.getAllReservasMap(observableSnapshot)
+  }
 
-    // mapping response
-    return from(getDocs(queryReserva)).pipe(
+  getAllReservasMap(observableSnapshot: Observable<QuerySnapshot<DocumentData, DocumentData>>) {
+    return observableSnapshot.pipe(
       switchMap(
         (snapshots) => {
           const docs =  from(Promise.all(snapshots.docs.map(async snapshot => {
@@ -73,7 +97,5 @@ export class ReservaService {
     );
   }
 }
-function form(arg0: Promise<Reserva>[]) {
-  throw new Error('Function not implemented.');
-}
+
 

@@ -39,7 +39,7 @@ export class BreadcrumAtom implements OnInit {
   goToPath(path: string) {
     let _path = path;
     const keysIds = Object.keys(this.breadcrumService.idsBreadCrum);
-    const keyFinder = keysIds.find(key => (path.match(/[\w]+/)?.[1]) === key) ?? '';
+    const keyFinder = keysIds.find(key => path.match(/\[([^\]]+)\]/)?.[1] === key) ?? '';
     if(keyFinder) {
       const id = this.breadcrumService.idsBreadCrum[keyFinder] ?? '';
       _path = _path.replace(`[${keyFinder}]`, id)

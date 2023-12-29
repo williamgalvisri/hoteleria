@@ -131,7 +131,6 @@ export class FilterTemplate implements OnInit {
     const values =  this.filterReservaFormGroup.value;
     this.reservaRepository.getByDocumentNumberReserva(values.documentNumber).subscribe(({response, status}) => {
       this.isLoadingFilterReserva = false;
-      console.log(response, status)
       if(status === 'success') {
         this.reservas = response
       }

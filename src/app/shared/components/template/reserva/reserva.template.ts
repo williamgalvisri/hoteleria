@@ -51,15 +51,7 @@ import { CommonModule, formatDate } from '@angular/common';
 
 export class ReservaTemplate implements OnInit, AfterViewInit, OnDestroy {
   person: FormPerson = new FormPerson();
-  guest: FormPerson[] = [{
-    typeDocument: '',
-    fullName: 'William galvis',
-    gender: '',
-    birthDay: '',
-    documentNumber: 0,
-    email: '',
-    phone: 1221314,
-  }];
+  guest: FormPerson[] = [];
   hotelId: string = '';
   roomsTypeOptions: OptionType[] = [];
   allowNumberPerson: number = 0;
@@ -81,7 +73,6 @@ export class ReservaTemplate implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private roomRepository: RoomRepository,
     private reservaRepository: ReservaRepository,
-    private reservaTemplateService: ReservaTemplateService
   ) {
     this.reservaFormGroup = this.formBuilder.group({
       room: ['', Validators.required],
