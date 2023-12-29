@@ -17,6 +17,7 @@ import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { GetTextFromOptionPipe } from '@shared/pipes/get-text-from-options.pipe';
 import { OptionType } from '@shared/components/atoms/select/model/select.model';
 import { TAX_OPTION, TYPE_ROOM_OPTION } from '@shared/components/utils/dummy-option.const';
+import { BreadcrumService } from '@shared/components/atoms/breadcrum/service/breadcrum.service';
 
 const COMPONENTS = [
   LabelAtom,
@@ -40,6 +41,7 @@ const MODULE = [
 export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
   rooms: Room[] = [];
   room: Room = new Room();
+  idHotel: string = '';
 
   typeRoomOptions: OptionType[] = TYPE_ROOM_OPTION;
   taxOptions: OptionType[] = TAX_OPTION;
@@ -51,6 +53,7 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
     private roomRepository: RoomRepository,
     private modalService: ModalService,
     private router: Router,
+    private breadcrumService: BreadcrumService
   ) {
     this.loadingState = {
       edit: false,
@@ -76,6 +79,7 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
     .pipe(
       switchMap((param) => {
         const id = param['id'];
+        this.idHotel = id;
         if (id) {
           return this.roomRepository.setHotelIdentifier(id)
         } else {
@@ -96,7 +100,6 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deactivateOrActivate(id: string, previewState: boolean) {
-    console.log(id, previewState);
     this.loadingState.activateOrDeactivate = true;
     this.roomRepository.activateOrDeactivateRoom(id, previewState).pipe(
       tap(() => {
@@ -117,6 +120,11 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
         this.formRoomInstanceModal.show();
       })
     ).subscribe()
+  }
+
+  goToReservas(id: string) {
+    this.breadcrumService.setIdBreadCrum(id, 'idRoom');
+    this.router.navigate([`admin/hotels/${this.idHotel}/${id}/reservas`])
   }
 
 

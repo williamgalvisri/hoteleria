@@ -59,7 +59,6 @@ export class FormReservaOrganism implements OnInit, AfterViewInit, OnChanges {
   ) {
     this.documentTypeOptions = DOCUMENT_TYPE_OPTION;
     this.sexTypeOptions = SEX_OPTION;
-
   }
 
   ngOnInit() {

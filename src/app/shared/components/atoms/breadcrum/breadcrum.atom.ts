@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router, RoutesRecognized } from '@angula
 import { Breadcrum } from './model/breadcrum.model';
 import { filter, map, mergeMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { BreadcrumService } from './service/breadcrum.service';
 
 @Component({
   standalone: true,
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
 export class BreadcrumAtom implements OnInit {
   dataBreadcrum: Breadcrum[] = [];
   routeData: any;
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private breadcrumService: BreadcrumService) {
       this.router.events.pipe(
         filter(e => e instanceof NavigationEnd),
         map(() => this.route),
@@ -36,6 +37,13 @@ export class BreadcrumAtom implements OnInit {
   }
 
   goToPath(path: string) {
-    this.router.navigate([path])
+    let _path = path;
+    const keysIds = Object.keys(this.breadcrumService.idsBreadCrum);
+    const keyFinder = keysIds.find(key => (path.match(/[\w]+/)?.[1]) === key) ?? '';
+    if(keyFinder) {
+      const id = this.breadcrumService.idsBreadCrum[keyFinder] ?? '';
+      _path = _path.replace(`[${keyFinder}]`, id)
+    }
+    this.router.navigate([_path])
   }
 }

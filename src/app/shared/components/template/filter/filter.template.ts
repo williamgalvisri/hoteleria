@@ -1,11 +1,13 @@
-import { formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Hotel } from '@models/hotel.model';
+import { Reserva } from '@models/reserva.model';
 import { ReservaService } from '@pages/reserva/service/reserva.service';
 import { HotelRepository } from '@repositories/hotel/hotel.repository';
 import { RepositoryModule } from '@repositories/repository.module';
+import { ReservaRepository } from '@repositories/reserva/reserva.repository';
 import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
 import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { InputAtom } from '@shared/components/atoms/input/input.atom';
@@ -15,8 +17,9 @@ import { ModalService } from '@shared/components/atoms/modal/service/modal.servi
 import { OptionType } from '@shared/components/atoms/select/model/select.model';
 import { SelectAtom } from '@shared/components/atoms/select/select.atom';
 import { FormReservaOrganism } from '@shared/components/organisms/form-persona/form-persona.organism';
-import { TYPE_ROOM_OPTION } from '@shared/components/utils/dummy-option.const';
+import { TAX_OPTION, TYPE_ROOM_OPTION } from '@shared/components/utils/dummy-option.const';
 import { GetFormControlPipe } from '@shared/pipes/get-form-control.pipe';
+import { GetTextFromOptionPipe } from '@shared/pipes/get-text-from-options.pipe';
 import { Modal } from 'flowbite';
 
 @Component({
@@ -31,7 +34,9 @@ import { Modal } from 'flowbite';
     RepositoryModule,
     CardAtom,
     ModalMolecule,
-    FormReservaOrganism
+    FormReservaOrganism,
+    CommonModule,
+    GetTextFromOptionPipe
   ],
   selector: 'tp-filter',
   templateUrl: 'filter.template.html',
@@ -39,19 +44,28 @@ import { Modal } from 'flowbite';
 })
 
 export class FilterTemplate implements OnInit {
+  selectedFilter: 'filter' | 'my-reservas' = 'my-reservas'
   formReservaInstanceModal!: Modal;
   allowPersonOption: OptionType[] = [];
   citiesOptions: OptionType[] = [];
   hotels: Hotel[] = [];
   isLoadigFilter: boolean = false;
+  isLoadingFilterReserva: boolean = false;
+  roomTypeOptions: OptionType[] = TYPE_ROOM_OPTION;
+  taxTypeOptions: OptionType[] = TAX_OPTION;
+
+  trySearchReservas: boolean = false;
   trySearchHotel: boolean = false;
+  // Reservas
+  reservas: Reserva[] = [];
 
   filterFormGroup!: FormGroup;
+  filterReservaFormGroup!: FormGroup;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private hotelRepository: HotelRepository,
-    private modalService: ModalService,
+    private reservaRepository: ReservaRepository,
     private reservaService: ReservaService
   ) {
     this.allowPersonOption = TYPE_ROOM_OPTION.map(option => ({
@@ -66,14 +80,20 @@ export class FilterTemplate implements OnInit {
   }
 
   setFormData(){
+    // add 24 hours end date beacause need gap between dates inputs
     const initDate = new Date();
     const endDate = new Date().setTime(new Date().getTime() + (24*60*60*1000));
+
     this.filterFormGroup = this.formBuilder.group({
       initDate: [formatDate(initDate,'yyyy-MM-dd', 'en')],
       endDate: [formatDate(endDate,'yyyy-MM-dd', 'en')],
-      allowPerson: ['4'],
-      city: ['Cartagena']
-    })
+      allowPerson: [''],
+      city: ['']
+    });
+
+    this.filterReservaFormGroup = this.formBuilder.group({
+      documentNumber: ['', Validators.required],
+    });
   }
 
   getCities() {
@@ -83,10 +103,6 @@ export class FilterTemplate implements OnInit {
         text: city
       }))
     })
-  }
-
-  ngAfterViewInit(): void {
-    // this.formReservaInstanceModal = this.modalService.createInstanceModal(ID_MODAL_FORM_RESERVA, {closable: false});
   }
 
   goToLogin() {
@@ -109,14 +125,33 @@ export class FilterTemplate implements OnInit {
     })
   }
 
+  applyFilterReserva() {
+    this.isLoadingFilterReserva = true;
+    this.trySearchReservas = true;
+    const values =  this.filterReservaFormGroup.value;
+    this.reservaRepository.getByDocumentNumberReserva(values.documentNumber).subscribe(({response, status}) => {
+      this.isLoadingFilterReserva = false;
+      console.log(response, status)
+      if(status === 'success') {
+        this.reservas = response
+      }
+    })
+  }
+
   goToFormReserva(hotel: Hotel){
-    console.log(hotel)
+    const values =  this.filterFormGroup.value;
     this.reservaService.emmitRooms(hotel?.rooms ?? []);
+    this.reservaService.emmitDates(values.initDate, values.endDate);
+    this.reservaService.emmitHotel(hotel);
     this.router.navigate([`reserva/${hotel.id}/form`]);
   }
 
   goToFilter() {
     this.router.navigate([`reserva/home`])
+  }
+
+  changeFilterType(type: 'filter' | 'my-reservas') {
+    this.selectedFilter = type;
   }
 
 }

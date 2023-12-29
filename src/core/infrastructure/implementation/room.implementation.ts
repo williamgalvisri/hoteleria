@@ -41,6 +41,6 @@ export class RoomImplementation implements RoomRepository {
   }
 
   unsubscribeSnapshot(): void {
-    this.roomService.listenerRooms$();
+    this.roomService.unsubscribeSnapshot();
   }
 }

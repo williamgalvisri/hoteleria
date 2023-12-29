@@ -1,3 +1,7 @@
 .inter-text {
   @apply mx-4 text-gray-500
 }
+
+.button-switch{
+  @apply text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white
+}

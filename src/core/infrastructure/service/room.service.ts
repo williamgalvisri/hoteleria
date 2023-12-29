@@ -18,9 +18,9 @@ export class RoomService {
 
   setHotelIdentifier(id: string): Observable<boolean> {
     return from(getDoc(doc(this.firestore, HOTELS, id))).pipe(map((snapshot) => {
+      console.log(snapshot.exists())
       if(snapshot.exists()) {
         this.idHotel = id;
-        console.log(this.idHotel)
       }
       return snapshot.exists()
     }));
@@ -43,7 +43,6 @@ export class RoomService {
 
   createRoom(payload: CreateRoomPayload): Observable<RequestInterface<any>> {
     const dto = RoomMapper.mapTo(payload);
-
     // Set the number of people possible by the type of rooms before to create
 
     return from(addDoc(collection(this.firestore, this.getPathRoom()), dto))
@@ -125,7 +124,9 @@ export class RoomService {
 
   // ----------------------------- helpers ----------------------
   unsubscribeSnapshot() {
-    this.unsubscribeRoomCollection()
+    if(this.unsubscribeRoomCollection) {
+      this.unsubscribeRoomCollection()
+    }
   }
 
 }

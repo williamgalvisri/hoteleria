@@ -29,6 +29,7 @@
           </div>
           <div>
             <at-button [fullWidth]="'full'" [size]="'xs'" (click)="editRoom(room.id)">Editar</at-button>
+            <at-button [fullWidth]="'full'" [size]="'xs'"  [classesAditional]="'mt-2'" (click)="goToReservas(room.id)">Ver Reservas</at-button>
             <!-- <at-button [type]="hotel.active ? 'danger' : 'success'" [fullWidth]="'full'" [size]="'xs'" (click)="deactivateOrActivate(hotel.id, hotel.active)">{{ hotel.active ? 'Desactivar' : 'Activar'}}</at-button> -->
           </div>
         </div>

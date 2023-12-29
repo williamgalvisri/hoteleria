@@ -2,7 +2,7 @@
   @if (hotels.length === 0) {
     <section class="flex flex-col items-center">
       <at-label classesAditional="mb-2" [size]="'2xl'">Parece que no tienes registrado hoteles, empieza ahora</at-label>
-      <at-button type="alternative">Quiero agregar un Hotel</at-button>
+      <at-button type="alternative" (click)="openFormHotelModal()">Quiero agregar un Hotel</at-button>
     </section>
   } @else {
     <at-button [fullWidth]="'full'" (click)="openFormHotelModal()">Agregar Hotel</at-button>
@@ -26,12 +26,11 @@
               </span>
             </section>
             <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4 " [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
+            <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4" [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
           </div>
           <div>
             <at-button type="alternative" [fullWidth]="'full'" [size]="'xs'" (click)="goToRooms(hotel.id)">Habitaciones</at-button>
-            <at-button [fullWidth]="'full'" [size]="'xs'" (click)="editHotel(hotel.id)">Editar</at-button>
-            <!-- <at-button [type]="hotel.active ? 'danger' : 'success'" [fullWidth]="'full'" [size]="'xs'" (click)="deactivateOrActivate(hotel.id, hotel.active)">{{ hotel.active ? 'Desactivar' : 'Activar'}}</at-button> -->
+            <at-button [fullWidth]="'full'" [size]="'xs'" [classesAditional]="'mt-2'" (click)="editHotel(hotel.id)">Editar</at-button>
           </div>
         </div>
       </at-card>

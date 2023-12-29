@@ -7,4 +7,5 @@ export interface HotelDto {
   city: string;
   active: boolean;
   rooms?: Room[]
+  create_at?: string;
 }

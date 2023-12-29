@@ -1,39 +1,62 @@
 <div class="flex justify-center items-center pb-6">
-  <section [formGroup]="reservaFormGroup" class="flex flex-col px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-12 w-4/5 max-w-2xl">
-    <at-label size="xl" [classesAditional]="'mt-4'">Reserva ahora</at-label>
-    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-    <ml-select-input [label]="'Tipo de habitacion'" [placeholder]="'Selecciona un tipo de habitación'" [options]="roomsTypeOptions" [control]="'room' | getControl:reservaFormGroup"></ml-select-input>
-    <at-button fullWidth="full" (click)="openModalPerson()">Agregar persona</at-button>
-    @if(guest.length > 0){
-      <ul class="my-2 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-        @for (guest of guest; track $index) {
-          <li class="w-full px-4 py-2 inline-flex justify-between border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-            <span class="hover:cursor-pointer hover:underline truncate max-w-[20rem]">{{guest.fullName}} - {{guest.documentNumber}} </span>
-            <div class="flex">
-              <svg class="size-4 text-gray-800 dark:text-white hover:cursor-pointer" (click)="editPerson($index, guest)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.418 17.861 1 20l2.139-6.418m4.279 4.279 10.7-10.7a3.027 3.027 0 0 0-2.14-5.165c-.802 0-1.571.319-2.139.886l-10.7 10.7m4.279 4.279-4.279-4.279m2.139 2.14 7.844-7.844m-1.426-2.853 4.279 4.279"/>
-              </svg>
-              <svg class="size-4 text-gray-800 dark:text-white hover:cursor-pointer ml-4" (click)="removePerson($index)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z"/>
-              </svg>
-            </div>
-          </li>
-        }
-      </ul>
-    }
-    @if(allowNumberPerson > 0) {
-      <p class="mb-2 text-base font-normal text-gray-500 dark:text-gray-400">Solo puedes agregar hasta {{allowNumberPerson}} persona(s) por el tipo de habitación.</p>
-    }
-    @if(showErroAllowedPerson) {
-      <p class="mb-2 error-message">Estas sobre el limite permitido por esta habitación. modifica el numero de huespedes o escoge otra habitación</p>
-    }
-    <at-label size="xl" [classesAditional]="'mt-4'">En caso de emergencias</at-label>
-    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-    <ml-text-input [label]="'Nombre Completo'" [control]="'emergencyFullName' | getControl:reservaFormGroup"></ml-text-input>
-    <ml-number-input [label]="'Telefono'" [control]="'emergencyPhone' | getControl:reservaFormGroup"></ml-number-input>
-    <at-button fullWidth="full" [disabled]="!reservaFormGroup.valid && guest.length > 0" (click)="openModalPerson()">¡Reservar Ahora!</at-button>
-    <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-2'" (click)="goToFilters()">Regresar a los filtros</at-button>
-  </section>
+  @if(!reserved) {
+    <section [formGroup]="reservaFormGroup" class="flex flex-col px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-12 w-4/5 max-w-2xl">
+      <at-label size="xl" [classesAditional]="'mt-4'">Reserva ahora</at-label>
+      <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+      <ml-select-input [label]="'Habitaciones disponibles'" [placeholder]="'Selecciona una habitación'" [options]="roomsTypeOptions" [control]="'room' | getControl:reservaFormGroup"></ml-select-input>
+      <at-button fullWidth="full" (click)="openModalPerson()">Agregar persona</at-button>
+      @if(guest.length > 0){
+        <ul class="my-2 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          @for (guest of guest; track $index) {
+            <li class="w-full px-4 py-2 inline-flex justify-between border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+              <span class="hover:cursor-pointer hover:underline truncate max-w-[20rem]">{{guest.fullName}} - {{guest.documentNumber}} </span>
+              <div class="flex">
+                <svg class="size-4 text-gray-800 dark:text-white hover:cursor-pointer" (click)="editPerson($index, guest)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.418 17.861 1 20l2.139-6.418m4.279 4.279 10.7-10.7a3.027 3.027 0 0 0-2.14-5.165c-.802 0-1.571.319-2.139.886l-10.7 10.7m4.279 4.279-4.279-4.279m2.139 2.14 7.844-7.844m-1.426-2.853 4.279 4.279"/>
+                </svg>
+                <svg class="size-4 text-gray-800 dark:text-white hover:cursor-pointer ml-4" (click)="removePerson($index)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                  <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z"/>
+                </svg>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+      <p class="mb-2 text-base font-normal text-gray-500 dark:text-gray-400">Al registrar los datos verifica la información al primero de la lista se le enviara un correo de confirmación con los datos de la reserva</p>
+      @if(allowNumberPerson > 0) {
+        <p class="mb-2 text-base font-normal text-gray-500 dark:text-gray-400">Solo puedes agregar hasta {{allowNumberPerson}} persona(s) por el tipo de habitación.</p>
+      }
+      @if(showErroAllowedPerson) {
+        <p class="mb-2 error-message">Estas sobre el limite permitido por esta habitación. modifica el numero de huespedes o escoge otra habitación</p>
+      }
+      <at-label size="xl" [classesAditional]="'mt-4'">En caso de emergencias</at-label>
+      <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+      <ml-text-input [label]="'Nombre Completo'" [control]="'emergencyFullName' | getControl:reservaFormGroup"></ml-text-input>
+      <ml-number-input [label]="'Telefono'" [control]="'emergencyPhone' | getControl:reservaFormGroup"></ml-number-input>
+      <at-button fullWidth="full" [loading]="loading" [disabled]="!reservaFormGroup.valid && guest.length > 0 && guest.length <= allowNumberPerson" (click)="saveReserva()">¡Reservar Ahora!</at-button>
+      <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-2'" (click)="goToFilters()">Regresar a los filtros</at-button>
+    </section>
+  } @else {
+    <section class="flex flex-col items-center">
+      <svg class="size-24 text-green-400 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+      </svg>
+      <at-label [size]="'4xl'" classesAditional="mt-2">Reservado Correctamente</at-label>
+
+      <at-label [size]="'xl'" classesAditional="mt-2">Resumen de la reserva</at-label>
+      <section class="grid grid-cols-2 gap-2 place-items-center mt-4">
+        <span class="block font-light text-gray-900 dark:text-white">Fecha desde:</span> <span class="block font-medium text-gray-900 dark:text-white">{{resumenReserva.initDate}}</span>
+        <span class="block font-light text-gray-900 dark:text-white">Fecha hasta:</span> <span class="block font-medium text-gray-900 dark:text-white">{{resumenReserva.endDate}}</span>
+        <span class="block font-light text-gray-900 dark:text-white">Numero Huepedes:</span> <span class="block font-medium text-gray-900 dark:text-white">{{resumenReserva.numberGuest}}</span>
+        <span class="block font-light text-gray-900 dark:text-white mt-2">Hotel:</span> <span class="block font-medium text-gray-900 dark:text-white">{{resumenReserva.hotelName}}</span>
+        <span class="block font-light text-gray-900 dark:text-white mt-2">Habitación:</span> <span class="block font-medium text-gray-900 dark:text-white">{{resumenReserva.locationRoom}}</span>
+      </section>
+      <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+      <span class="block font-medium text-gray-900 dark:text-white mt-2 text-2xl">{{resumenReserva.price | currency}} + {{resumenReserva.tax}}</span>
+      <at-label classesAditional="mt-2">Le enviamos un correo con el resumen de su reservación</at-label>
+      <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-4'" (click)="goToFilters()">Regresar a los filtros</at-button>
+    </section>
+  }
 </div>
 
 <!-- Modals -->

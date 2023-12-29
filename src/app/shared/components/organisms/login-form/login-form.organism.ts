@@ -44,16 +44,17 @@ export class LoginFormOrganism implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
   ) {
-    this.optionsUserType = [{
-      value: UserTypeEnum.TRAVELER,
-      name: 'userType',
-      label: 'Viajero'
-    },
+    this.optionsUserType = [
+    // {
+    //   value: UserTypeEnum.TRAVELER,
+    //   name: 'userType',
+    //   label: 'Viajero'
+    // },
     {
       value: UserTypeEnum.AGENT,
       name: 'userType',
       label: 'Agente'
-    }]
+    }];
   }
 
   ngOnInit() {

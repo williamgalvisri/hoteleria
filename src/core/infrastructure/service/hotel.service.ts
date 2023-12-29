@@ -4,7 +4,7 @@ import { HotelMapper } from '@infrastructure/mappers/hotel.mapper';
 import { CreateHotelPayload, FiltersHotelPayload, UpdateHotelPayload } from '@infrastructure/payload/hotel.payload';
 import { Hotel } from '@models/hotel.model';
 import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
-import { Firestore, collection, addDoc, getDocs, CollectionReference, FirestoreDataConverter, doc, getDoc, updateDoc, onSnapshot, query, collectionData, Unsubscribe, collectionGroup, where} from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, CollectionReference, FirestoreDataConverter, doc, getDoc, updateDoc, onSnapshot, query, collectionData, Unsubscribe, collectionGroup, where, orderBy} from '@angular/fire/firestore';
 import { RequestInterface, StatusResponse } from '@infrastructure/base/request.model';
 import { HOTELS, ROOMS } from '@infrastructure/base/collections.const';
 import { RoomMapper } from '@infrastructure/mappers/room.mapper';
@@ -19,7 +19,7 @@ export class HotelService {
   constructor() { }
 
   listenerHotels$(): Observable<Hotel[]>  {
-    const collectionRef = collection(this.firestore, HOTELS);
+    const collectionRef = query(collection(this.firestore, HOTELS), orderBy('create_at', 'desc'));
     return new Observable((observable) => {
       this.unsubscribeHotelCollection = onSnapshot(query(collectionRef), (snapshots) => {
         const docs = snapshots.docs.map(snapshot => HotelMapper.mapFrom({id: snapshot.id, ...snapshot.data() as HotelDto}))
@@ -66,7 +66,7 @@ export class HotelService {
 
   getAllHotels(): Observable<RequestInterface<Hotel[]>> {
     // Get reference
-    const collectionRef = collection(this.firestore, HOTELS);
+    const collectionRef = query(collection(this.firestore, HOTELS), orderBy('created_at', 'desc'));
     // mapping response
     return from(getDocs(collectionRef)).pipe(
       map(
@@ -128,7 +128,6 @@ export class HotelService {
 
 
   applyFilters(filters: FiltersHotelPayload): Observable<RequestInterface<Hotel[]>> {
-    console.log(filters);
     const collectionRef = collection(this.firestore, HOTELS);
     const queryHotel = query(collectionRef, where('city', '==', filters.city));
 

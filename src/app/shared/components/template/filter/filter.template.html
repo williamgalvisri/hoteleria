@@ -1,55 +1,120 @@
 <section class="text-center flex flex-col h-screen  overflow-y-auto">
+
+  <div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
+      <button type="button" [ngClass]="{
+        'button-switch': true,
+        'ring-4 outline-none ring-blue-300 dark:ring-blue-800': selectedFilter === 'filter'}" (click)="changeFilterType('filter')">Buscar Hotel</button>
+      <button type="button" [ngClass]="{
+        'button-switch': true,
+        'ring-4 outline-none ring-blue-300 dark:ring-blue-800': selectedFilter === 'my-reservas'}" (click)="changeFilterType('my-reservas')">Buscar Reserva</button>
+  </div>
   <div class="px-6 pb-4">
-    <section [formGroup]="filterFormGroup" class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-12 grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-4">
-      <div class="flex items-center">
-          <span class="inter-text">desde</span>
-          <div class="w-full">
-            <at-input [type]="'date'" id="init-date" [control]="'initDate' | getControl:filterFormGroup" classesAditional="w-full"></at-input>
-          </div>
-          <span class="inter-text">a</span>
-          <div class="w-full">
-            <at-input [type]="'date'" id="end-date" [control]="'endDate' | getControl:filterFormGroup"></at-input>
-          </div>
-      </div>
-      <div class="flex items-center">
-        <span class="inter-text">para</span>
-        <div class="w-full">
-          <at-select [options]="allowPersonOption" [control]="'allowPerson' | getControl:filterFormGroup" [placeholder]="'Cantidad de personas'"></at-select>
-        </div>
-      </div>
-      <div class="flex items-center">
-        <span class="inter-text">en</span>
-        <div class="w-full">
-          <at-select [options]="citiesOptions" [control]="'city' | getControl:filterFormGroup" [placeholder]="'Selecciona el lugar'"></at-select>
-        </div>
-      </div>
-      <div>
-        <at-button [classesAditional]="'mb-0 ml-0'" [fullWidth]="'full'" [disabled]="!filterFormGroup.valid" [loading]="isLoadigFilter" (click)="applyFilter()">Buscar</at-button>
-      </div>
-    </section>
+    @if(selectedFilter === "filter") {
+      <ng-container [ngTemplateOutlet]="filterTemplate"></ng-container>
+    } @else if (selectedFilter === "my-reservas") {
+      <ng-container [ngTemplateOutlet]="filterReservaTemplate"></ng-container>
+    }
   </div>
   <section class="flex-1">
-    <section class="py-4 px-6">
-      @if (hotels.length > 0) {
-        <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Selecciona un hotel para reservar.</p>
-        @for (hotel of hotels; track $index) {
-          <at-card width="xs" [classesAditional]="'min-h-10rem max-h-12rem mb-2'">
-            <section class="grid grid-cols-1">
-              <section class="flex flex-col justify-start items-start">
-                <at-label [size]="'xl'" [classesAditional]="'hover:cursor-pointer hover:underline'" (click)="goToFormReserva(hotel)">{{hotel.name}}</at-label>
-                <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
-                <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4 " [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
-              </section>
-            </section>
-          </at-card>
-        }
-      } @else {
-        @if(!trySearchHotel) {
-          <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">🔎 Intenta aplicar los filtros para ver si encontramos algun lugar que se amolde a tus necesidades.</p>
-        } @else {
-          <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">😞 Lo sentimos no encontramos resultado con lo que intentas buscar, intenta más tarde.</p>
-        }
-      }
-    </section>
+    @if(selectedFilter === "filter") {
+      <ng-container [ngTemplateOutlet]="resultFilter"></ng-container>
+    } @else if (selectedFilter === "my-reservas") {
+      <ng-container [ngTemplateOutlet]="resultFilterReserva"></ng-container>
+    }
   </section>
 </section>
+
+<!-- Filters template -->
+<ng-template #filterTemplate>
+  <section [formGroup]="filterFormGroup" class="px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4 grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-4">
+    <div class="flex items-center">
+        <span class="inter-text">desde</span>
+        <div class="w-full">
+          <at-input [type]="'date'" id="init-date" [control]="'initDate' | getControl:filterFormGroup" classesAditional="w-full"></at-input>
+        </div>
+        <span class="inter-text">a</span>
+        <div class="w-full">
+          <at-input [type]="'date'" id="end-date" [control]="'endDate' | getControl:filterFormGroup"></at-input>
+        </div>
+    </div>
+    <div class="flex items-center">
+      <span class="inter-text">para</span>
+      <div class="w-full">
+        <at-select [options]="allowPersonOption" [control]="'allowPerson' | getControl:filterFormGroup" [placeholder]="'Cantidad de personas'"></at-select>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <span class="inter-text">en</span>
+      <div class="w-full">
+        <at-select [options]="citiesOptions" [control]="'city' | getControl:filterFormGroup" [placeholder]="'Selecciona el lugar'"></at-select>
+      </div>
+    </div>
+    <div>
+      <at-button [classesAditional]="'mb-0 ml-0'" [fullWidth]="'full'" [disabled]="!filterFormGroup.valid" [loading]="isLoadigFilter" (click)="applyFilter()">Buscar</at-button>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #resultFilter>
+  <section class="py-4 px-6">
+    @if (hotels.length > 0) {
+      <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Selecciona un hotel para reservar.</p>
+      @for (hotel of hotels; track $index) {
+        <at-card width="xs" [classesAditional]="'min-h-10rem max-h-12rem mb-2'">
+          <section class="grid grid-cols-1">
+            <section class="flex flex-col justify-start items-start">
+              <at-label [size]="'xl'" [classesAditional]="'hover:cursor-pointer hover:underline'" (click)="goToFormReserva(hotel)">{{hotel.name}}</at-label>
+              <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4 " [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
+            </section>
+          </section>
+        </at-card>
+      }
+    } @else {
+      @if(!trySearchHotel) {
+        <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">🔎 Intenta aplicar los filtros para ver si encontramos algun lugar que se amolde a tus necesidades.</p>
+      } @else {
+        <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">😞 Lo sentimos no encontramos resultado con lo que intentas buscar, intenta más tarde.</p>
+      }
+    }
+  </section>
+</ng-template>
+
+<!-- Filter reserva by documents -->
+<ng-template #filterReservaTemplate>
+  <section [formGroup]="filterReservaFormGroup" class="px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4 grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-2">
+    <div>
+      <at-input [type]="'number'" id="document-number" [control]="'documentNumber' | getControl:filterReservaFormGroup" [placeholder]="'Escribe un numero documento de los que registraste'" ></at-input>
+    </div>
+    <div>
+      <at-button [classesAditional]="'mb-0 ml-0'" [fullWidth]="'full'" [disabled]="!filterReservaFormGroup.valid" [loading]="isLoadingFilterReserva" (click)="applyFilterReserva()">Buscar</at-button>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #resultFilterReserva>
+  <section class="py-4 px-6">
+    @if (reservas.length > 0) {
+      @for (reserva of reservas; track $index) {
+        <at-card width="xs" [classesAditional]="'min-h-10rem max-h-12rem mb-2'">
+          <section class="grid grid-cols-1">
+            <section class="flex flex-col justify-start items-start gap-3">
+              <at-label [size]="'xl'" [classesAditional]="'hover:cursor-pointer hover:underline'">{{reserva.hotelDocument?.name}}</at-label>
+              <span class="text-gray-500 dark:text-gray-400 text-base">Desde {{reserva.initDate}} hasta {{reserva.endDate}}</span>
+              <span class="text-gray-500 dark:text-gray-400 text-base">{{reserva.roomDocument?.location}} ({{reserva.roomDocument?.roomType | getTextFromOptions:roomTypeOptions }})</span>
+              <span class="text-gray-500 dark:text-gray-400 text-xs">Numero de Huespedes: {{reserva.guests.length ? reserva.guests.length : 0 }}</span>
+              <span class="text-gray-500 dark:text-gray-400 text-xs">Precio: {{reserva.roomDocument?.cost | currency}} + {{reserva.roomDocument?.tax | getTextFromOptions:taxTypeOptions}}</span>
+            </section>
+          </section>
+        </at-card>
+      }
+    } @else {
+      @if(!trySearchReservas) {
+        <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">¿Tienes rerservas? 🤔 Digita tu numero de cedula y buscar el resumen.</p>
+      } @else {
+        <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">No encontramos datos relacionados a este documento.</p>
+      }
+    }
+  </section>
+</ng-template>
+
