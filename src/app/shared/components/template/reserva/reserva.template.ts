@@ -25,6 +25,7 @@ import { CreateReservaPayload } from '@infrastructure/payload/reserva.payload';
 import { ReservaRepository } from '@repositories/reserva/reserva.repository';
 import { ReservaTemplateService } from './service/reserva-template.service';
 import { CommonModule, formatDate } from '@angular/common';
+import { SkeletonAtom } from '@shared/components/atoms/skeleton/skeleton.atom';
 
 @Component({
   standalone: true,
@@ -39,7 +40,7 @@ import { CommonModule, formatDate } from '@angular/common';
     FormReservaOrganism,
     LabelAtom,
     RepositoryModule,
-    CommonModule
+    CommonModule,
   ],
   providers:[
     GetTextFromOptionPipe
@@ -62,6 +63,8 @@ export class ReservaTemplate implements OnInit, AfterViewInit, OnDestroy {
   loading: boolean = false;
   reserved: boolean = false;
   resumenReserva!: ResumenReserva;
+  isLoading: boolean = true;
+
   private reservaFormGroupSubscription!: Subscription;
   private routerActivedSubscription!: Subscription;
   constructor(

@@ -5,7 +5,6 @@
     "ng": "ng",
     "dev": "ng serve",
     "build": "ng build",
-    "dev:docker": "docker compose up dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -22,6 +21,7 @@
     "@angular/router": "^17.0.0",
     "flowbite": "^2.2.1",
     "rxjs": "~7.8.0",
+    "tailwindcss-animated": "^1.0.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
   },

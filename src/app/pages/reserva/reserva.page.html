@@ -1,6 +1,10 @@
-<section class="px-6 pt-6 pb-4 text-center">
-  <at-label [size]="'4xl'" classesAditional="mb-4 font-extrabold leading-none tracking-tight text-4xl md:text-5xl lg:text-6xl dark:text-white">Bienvenido a Hoteleria</at-label>
-      <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Aqui puedes hacer tus reservas online de nuestro catalogo de Hoteles.</p>
-      <at-button [size]="'base'" (click)="goToLogin()">¿Te gustaría registrar hoteles?</at-button>
+<section class="p-6">
+  <figure class="w-30 h-[29.375rem] rounded-3xl background-gradient bg-no-repeat bg-left bg-cover animate-fade-down">
+    <section class="px-6 pt-6 pb-4 text-center md:text-left h-full flex flex-col justify-center items-center md:items-start">
+          <at-label [size]="'4xl'" classesAditional="mb-4 font-extrabold leading-none tracking-tight text-4xl md:text-5xl lg:text-6xl text-white">Bienvenido a Hoteleria</at-label>
+          <p class="mb-6 text-lg font-normal lg:text-xl text-gray-300">Aqui puedes hacer tus reservas online de nuestro catalogo de Hoteles.</p>
+          <at-button type="alternative" [size]="'base'" (onClick)="goToLogin()">¿Te gustaría registrar hoteles?</at-button>
+    </section>
+  </figure>
 </section>
 <router-outlet></router-outlet>

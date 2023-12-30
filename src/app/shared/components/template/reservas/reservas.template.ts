@@ -9,6 +9,7 @@ import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
 import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { LabelAtom } from '@shared/components/atoms/label/label.atom';
 import { ModalMolecule } from '@shared/components/atoms/modal/modal.molecule';
+import { SkeletonAtom } from '@shared/components/atoms/skeleton/skeleton.atom';
 import { FormRoomOrganism } from '@shared/components/organisms/form-room/form-room.organism';
 import { GetTextFromOptionPipe } from '@shared/pipes/get-text-from-options.pipe';
 import { of, switchMap, tap } from 'rxjs';
@@ -20,6 +21,7 @@ const COMPONENTS = [
   FormRoomOrganism,
   CardAtom,
   GetTextFromOptionPipe,
+  SkeletonAtom
 ];
 
 const MODULE = [
@@ -35,7 +37,8 @@ const MODULE = [
 })
 
 export class ReservasTemplate implements OnInit {
-  reservas: Reserva[] = []
+  reservas: Reserva[] = [];
+  isLoading: boolean = true;
   constructor(
     private reservaRepository: ReservaRepository,
     private activatedRoute: ActivatedRoute,
@@ -70,6 +73,7 @@ export class ReservasTemplate implements OnInit {
             if(status === 'success') {
               this.reservas = response;
             }
+            this.isLoading = false;
           }))
         }
       })

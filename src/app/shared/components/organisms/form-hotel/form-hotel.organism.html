@@ -6,7 +6,7 @@
     [fullWidth]="'full'"
     [disabled]="!hotelFormGroup.valid"
     [loading]="isLoading"
-    (click)="this.formData.id ? updateHotel() : createHotel()">
+    (onClick)="this.formData.id ? updateHotel() : createHotel()">
     {{this.formData.id ? 'Actualizar Hotel' : 'Crear Hotel'}}
   </at-button>
 </section>

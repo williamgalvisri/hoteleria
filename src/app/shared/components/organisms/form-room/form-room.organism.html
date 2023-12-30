@@ -6,7 +6,7 @@
   <at-button
     [fullWidth]="'full'"
     [loading]="isLoading"
-    (click)="this.formData.id ? updateRoom() : createRoom()"
+    (onClick)="this.formData.id ? updateRoom() : createRoom()"
     [disabled]="!roomFormGroup.valid">
     {{this.formData.id ? 'Actualizar Habitación' : 'Crear Habitación'}}
   </at-button>

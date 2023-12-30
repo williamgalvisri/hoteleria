@@ -16,6 +16,7 @@ import { ModalMolecule } from '@shared/components/atoms/modal/modal.molecule';
 import { ModalService } from '@shared/components/atoms/modal/service/modal.service';
 import { OptionType } from '@shared/components/atoms/select/model/select.model';
 import { SelectAtom } from '@shared/components/atoms/select/select.atom';
+import { SkeletonAtom } from '@shared/components/atoms/skeleton/skeleton.atom';
 import { FormReservaOrganism } from '@shared/components/organisms/form-persona/form-persona.organism';
 import { TAX_OPTION, TYPE_ROOM_OPTION } from '@shared/components/utils/dummy-option.const';
 import { GetFormControlPipe } from '@shared/pipes/get-form-control.pipe';
@@ -36,7 +37,8 @@ import { Modal } from 'flowbite';
     ModalMolecule,
     FormReservaOrganism,
     CommonModule,
-    GetTextFromOptionPipe
+    GetTextFromOptionPipe,
+    SkeletonAtom
   ],
   selector: 'tp-filter',
   templateUrl: 'filter.template.html',
@@ -44,13 +46,14 @@ import { Modal } from 'flowbite';
 })
 
 export class FilterTemplate implements OnInit {
-  selectedFilter: 'filter' | 'my-reservas' = 'my-reservas'
+  selectedFilter: 'filter' | 'my-reservas' = 'filter'
   formReservaInstanceModal!: Modal;
   allowPersonOption: OptionType[] = [];
   citiesOptions: OptionType[] = [];
   hotels: Hotel[] = [];
   isLoadigFilter: boolean = false;
   isLoadingFilterReserva: boolean = false;
+  isLoading: boolean = true;
   roomTypeOptions: OptionType[] = TYPE_ROOM_OPTION;
   taxTypeOptions: OptionType[] = TAX_OPTION;
 
@@ -122,6 +125,7 @@ export class FilterTemplate implements OnInit {
       this.isLoadigFilter = false;
       // if the person not search yet show a message invite them to apply filters
       this.trySearchHotel = true;
+      this.isLoading = false;
     })
   }
 

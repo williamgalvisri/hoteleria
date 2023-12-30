@@ -1,41 +1,46 @@
 <div class="p-4">
-  @if (hotels.length === 0) {
-    <section class="flex flex-col items-center">
-      <at-label classesAditional="mb-2" [size]="'2xl'">Parece que no tienes registrado hoteles, empieza ahora</at-label>
-      <at-button type="alternative" (click)="openFormHotelModal()">Quiero agregar un Hotel</at-button>
-    </section>
+  @if(isLoading) {
+    <at-skeleton></at-skeleton>
   } @else {
-    <at-button [fullWidth]="'full'" (click)="openFormHotelModal()">Agregar Hotel</at-button>
-  }
-
-  <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
-    @for (hotel of hotels; track $index) {
-      <!--TODO: this is a organism -->
-      <at-card [width]="'xs'" [classesAditional]="'h-[20rem] w-[20rem]'">
-        <div class="w-full flex flex-col justify-between items-left h-full">
-          <div class="flex flex-col">
-            <section class="flex items-center justify-between">
-              <section class="w-[12.5rem]">
-                <at-label [size]="'lg'" classesAditional="truncate">{{hotel.name}}</at-label>
-              </section>
-                <!-- <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
-                <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span> -->
-                <span class="relative flex h-3.5 w-3.5 cursor-pointer" (click)="deactivateOrActivate(hotel.id, hotel.active)">
-                <span *ngIf="hotel.active" [ngClass]="['animate-ping absolute inline-flex opacity-75  w-3.5 h-3.5  rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
-                <span [ngClass]="['relative inline-flex  w-3.5 h-3.5 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span>
-              </span>
-            </section>
-            <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4" [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
-          </div>
-          <div>
-            <at-button type="alternative" [fullWidth]="'full'" [size]="'xs'" (click)="goToRooms(hotel.id)">Habitaciones</at-button>
-            <at-button [fullWidth]="'full'" [size]="'xs'" [classesAditional]="'mt-2'" (click)="editHotel(hotel.id)">Editar</at-button>
-          </div>
-        </div>
-      </at-card>
+    @if (hotels.length === 0) {
+      <section class="flex flex-col items-center">
+        <at-label classesAditional="mb-2" [size]="'2xl'">Parece que no tienes registrado hoteles, empieza ahora</at-label>
+        <at-button type="alternative" (click)="openFormHotelModal()">Quiero agregar un Hotel</at-button>
+      </section>
+    } @else {
+      <at-button [fullWidth]="'full'" (click)="openFormHotelModal()">Agregar Hotel</at-button>
     }
-  </section>
+
+    <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
+      @for (hotel of hotels; track $index) {
+        <!--TODO: this is a organism -->
+        <at-card [width]="'xs'" [classesAditional]="'h-[20rem] w-[20rem]'">
+          <div class="w-full flex flex-col justify-between items-left h-full">
+            <div class="flex flex-col">
+              <section class="flex items-center justify-between">
+                <section class="w-[12.5rem]">
+                  <at-label [size]="'lg'" classesAditional="truncate">{{hotel.name}}</at-label>
+                </section>
+                  <!-- <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
+                  <span [ngClass]="['ml-2 left-7 w-3.5 h-3.5 border-2 border-white dark:border-gray-800 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span> -->
+                  <span class="relative flex h-3.5 w-3.5 cursor-pointer" (click)="deactivateOrActivate(hotel.id, hotel.active)">
+                  <span *ngIf="hotel.active" [ngClass]="['animate-ping absolute inline-flex opacity-75  w-3.5 h-3.5  rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
+                  <span [ngClass]="['relative inline-flex  w-3.5 h-3.5 rounded-full', hotel.active ? 'bg-green-400' : 'bg-red-400']"></span>
+                </span>
+              </section>
+              <span class="text-gray-500 dark:text-gray-400 text-xs">{{hotel.city}}</span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-3 text-justify mt-4" [title]="hotel.description">{{ hotel.description ? hotel.description : 'Sin descripción aún.'}}</span>
+            </div>
+            <div>
+              <at-button type="alternative" [fullWidth]="'full'" [size]="'xs'" (onClick)="goToRooms(hotel.id)">Habitaciones</at-button>
+              <at-button [fullWidth]="'full'" [size]="'xs'" [classesAditional]="'mt-2'" (onClick)="editHotel(hotel.id)">Editar</at-button>
+              <at-button [type]="hotel.active ? 'danger' : 'success'" [fullWidth]="'full'"  [classesAditional]="'mt-2'" [size]="'xs'" (click)="deactivateOrActivate(hotel.id, hotel.active)">{{ hotel.active ? 'Desactivar' : 'Activar'}}</at-button>
+            </div>
+          </div>
+        </at-card>
+      }
+    </section>
+  }
 </div>
 <!-- Modals -->
 <ml-modal [title]="hotel.id ? 'Editar Hotel' : 'Crear Hotel'" [id]="'modal-form-hotel'" (onCloseEmmiter)="closeFormHotelModal()">

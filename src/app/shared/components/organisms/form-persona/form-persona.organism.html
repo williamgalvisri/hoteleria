@@ -11,7 +11,7 @@
   <at-button
     [fullWidth]="'full'"
     [loading]="isLoading"
-    (click)="actionPersonForm(!formData.fullName ? 'create' : 'edit' )"
+    (onClick)="actionPersonForm(!formData.fullName ? 'create' : 'edit' )"
     [disabled]="!guestFormGroup.valid">
     {{!formData.fullName ? 'Agregar Huesped' : 'Editar Huesped'}}
   </at-button>

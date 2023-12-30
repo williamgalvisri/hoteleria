@@ -18,6 +18,7 @@ import { GetTextFromOptionPipe } from '@shared/pipes/get-text-from-options.pipe'
 import { OptionType } from '@shared/components/atoms/select/model/select.model';
 import { TAX_OPTION, TYPE_ROOM_OPTION } from '@shared/components/utils/dummy-option.const';
 import { BreadcrumService } from '@shared/components/atoms/breadcrum/service/breadcrum.service';
+import { SkeletonAtom } from '@shared/components/atoms/skeleton/skeleton.atom';
 
 const COMPONENTS = [
   LabelAtom,
@@ -26,6 +27,7 @@ const COMPONENTS = [
   FormRoomOrganism,
   CardAtom,
   GetTextFromOptionPipe,
+  SkeletonAtom
 ];
 
 const MODULE = [
@@ -42,6 +44,7 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
   rooms: Room[] = [];
   room: Room = new Room();
   idHotel: string = '';
+  isLoading: boolean = true;
 
   typeRoomOptions: OptionType[] = TYPE_ROOM_OPTION;
   taxOptions: OptionType[] = TAX_OPTION;
@@ -94,6 +97,7 @@ export class RoomsTemplate implements OnInit, AfterViewInit, OnDestroy {
         } else {
           return this.roomRepository.listenerRooms$().pipe(tap((rooms) => {
             this.rooms = rooms;
+            this.isLoading = false;
           }))
         }
       })

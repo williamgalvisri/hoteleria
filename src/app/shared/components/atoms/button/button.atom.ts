@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AtomPropertyBase } from '@shared/components/utils/base-atoms';
 
 @Component({
@@ -18,7 +18,12 @@ export class ButtonAtom implements OnInit,AtomPropertyBase {
   @Input() id: string = ''
   @Input() loading: boolean = false;
   @Input() classesAditional: string = '';
+  @Output() onClick = new EventEmitter<boolean>();
   constructor() { }
 
   ngOnInit() { }
+
+  clickButton() {
+    this.onClick.emit(true)
+  }
 }

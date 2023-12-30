@@ -12,6 +12,7 @@ import { OptionGroupMolecule } from '@shared/components/molecules/option-group/o
 import { PasswordInputMolecule } from '@shared/components/molecules/password-input/password-input.molecule';
 import { GetFormControlPipe } from '@shared/pipes/get-form-control.pipe';
 import { LoginForm, UserTypeEnum } from './login-form.model';
+import { LabelAtom } from '@shared/components/atoms/label/label.atom';
 
 const COMPONENTS = [
   InputAtom,
@@ -20,7 +21,8 @@ const COMPONENTS = [
   OptionGroupMolecule,
   EmailMolecule,
   PasswordInputMolecule,
-  GetFormControlPipe
+  GetFormControlPipe,
+  LabelAtom
 ];
 
 const MODULE = [

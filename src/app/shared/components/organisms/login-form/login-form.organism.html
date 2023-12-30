@@ -1,9 +1,11 @@
-<at-card>
-  <section [formGroup]="loginFormGroup">
+<!-- <at-card> -->
+  <at-label size="4xl" [classesAditional]="'font-bold'">Ingresar</at-label>
+  <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt-3">Ingresa y gestiona todos los hoteles.</span>
+  <section class="mt-8" [formGroup]="loginFormGroup">
     <ml-email-input [control]="'email'| getControl:loginFormGroup" ></ml-email-input>
     <ml-password-input [control]="'password'| getControl:loginFormGroup"></ml-password-input>
     <!-- <ml-option-group [options]="optionsUserType" [control]="'userType'| getControl:loginFormGroup"></ml-option-group> -->
   </section>
-  <at-button fullWidth="full" [classesAditional]="'mb-2'" [disabled]="!loginFormGroup.valid" (click)="login()">Ingresar</at-button>
-  <at-button [type]="'alternative'" fullWidth="full" [disabled]="!loginFormGroup.valid" (click)="goToReserva()">Reservar</at-button>
-</at-card>
+  <at-button fullWidth="full" [classesAditional]="'mb-6 mt-4'" [disabled]="!loginFormGroup.valid" (onClick)="login()">INGRESAR</at-button>
+  <at-button [type]="'alternative'" fullWidth="full" [disabled]="!loginFormGroup.valid" (onClick)="goToReserva()">RESERVAR</at-button>
+<!-- </at-card> -->

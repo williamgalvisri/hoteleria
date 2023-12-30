@@ -2,6 +2,7 @@
   type="button"
   [disabled]="disabled || loading"
   [id]="id"
+  (click)="clickButton()"
   [ngClass]="[
     'button', 'button--'+type,
     fullWidth == 'full' ? 'w-full' : '',

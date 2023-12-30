@@ -8,6 +8,7 @@ import { CardAtom } from '@shared/components/atoms/card/card.atom';
 import { LabelAtom } from '@shared/components/atoms/label/label.atom';
 import { ModalMolecule } from '@shared/components/atoms/modal/modal.molecule';
 import { ModalService } from '@shared/components/atoms/modal/service/modal.service';
+import { SkeletonAtom } from '@shared/components/atoms/skeleton/skeleton.atom';
 import { FormHotelOrganism } from '@shared/components/organisms/form-hotel/form-hotel.organism';
 import { ID_MODAL_FORM_HOTEL } from '@shared/components/utils/modal-keys.const';
 import { Modal } from 'flowbite';
@@ -16,7 +17,7 @@ import { Subscription, tap } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'tp-hotel',
-  imports: [ButtonAtom, LabelAtom, CardAtom, ModalMolecule, FormHotelOrganism, CommonModule],
+  imports: [ButtonAtom, LabelAtom, CardAtom, ModalMolecule, FormHotelOrganism, SkeletonAtom, CommonModule],
   providers:[],
   templateUrl: './hotel.template.html',
   styleUrl: './hotel.template.css'
@@ -26,6 +27,7 @@ export class HotelTemplate implements OnInit, AfterViewInit, OnDestroy {
   hotels: Hotel[] = [];
   hotel: Hotel = new Hotel();
   loadingState: { edit: boolean,  activateOrDeactivate: boolean};
+  isLoading: boolean = true;
   formHotelInstanceModal!: Modal;
 
 
@@ -73,6 +75,7 @@ export class HotelTemplate implements OnInit, AfterViewInit, OnDestroy {
   getHotels() {
     this.subscriptionListenerHotels = this.hotelRepository.listenerHotels$().subscribe((hotels) => {
       this.hotels = hotels;
+      this.isLoading = false;
     })
   }
 

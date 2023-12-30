@@ -4,7 +4,7 @@
       <at-label size="xl" [classesAditional]="'mt-4'">Reserva ahora</at-label>
       <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
       <ml-select-input [label]="'Habitaciones disponibles'" [placeholder]="'Selecciona una habitación'" [options]="roomsTypeOptions" [control]="'room' | getControl:reservaFormGroup"></ml-select-input>
-      <at-button fullWidth="full" (click)="openModalPerson()">Agregar persona</at-button>
+      <at-button fullWidth="full" (onClick)="openModalPerson()">Agregar persona</at-button>
       @if(guest.length > 0){
         <ul class="my-2 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
           @for (guest of guest; track $index) {
@@ -33,8 +33,8 @@
       <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
       <ml-text-input [label]="'Nombre Completo'" [control]="'emergencyFullName' | getControl:reservaFormGroup"></ml-text-input>
       <ml-number-input [label]="'Telefono'" [control]="'emergencyPhone' | getControl:reservaFormGroup"></ml-number-input>
-      <at-button fullWidth="full" [loading]="loading" [disabled]="!reservaFormGroup.valid && guest.length > 0 && guest.length <= allowNumberPerson" (click)="saveReserva()">¡Reservar Ahora!</at-button>
-      <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-2'" (click)="goToFilters()">Regresar a los filtros</at-button>
+      <at-button fullWidth="full" [loading]="loading" [disabled]="!(reservaFormGroup.valid && guest.length > 0 && guest.length <= allowNumberPerson)" (onClick)="saveReserva()">¡Reservar Ahora!</at-button>
+      <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-2'" (onClick)="goToFilters()">Regresar a los filtros</at-button>
     </section>
   } @else {
     <section class="flex flex-col items-center">
@@ -54,7 +54,7 @@
       <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
       <span class="block font-medium text-gray-900 dark:text-white mt-2 text-2xl">{{resumenReserva.price | currency}} + {{resumenReserva.tax}}</span>
       <at-label classesAditional="mt-2">Le enviamos un correo con el resumen de su reservación</at-label>
-      <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-4'" (click)="goToFilters()">Regresar a los filtros</at-button>
+      <at-button type="alternative" fullWidth="full" [classesAditional]="'mt-4'" (onClick)="goToFilters()">Regresar a los filtros</at-button>
     </section>
   }
 </div>

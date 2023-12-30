@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ButtonAtom } from '@shared/components/atoms/button/button.atom';
+import { LabelAtom } from '@shared/components/atoms/label/label.atom';
 import { OptionAtom } from '@shared/components/atoms/option/option.atom';
 import { LoginFormOrganism } from '@shared/components/organisms/login-form/login-form.organism';
 
 
 const COMPONENTS = [
   ButtonAtom,
-  LoginFormOrganism
+  LoginFormOrganism,
+  LabelAtom
 ];
 
 

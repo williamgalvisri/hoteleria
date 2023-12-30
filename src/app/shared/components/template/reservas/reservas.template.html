@@ -1,38 +1,39 @@
 <div class="p-4">
-  @if (reservas.length === 0) {
-    <section class="flex flex-col items-center">
-      <at-label classesAditional="mb-2" [size]="'2xl'">No hay reservas para esta habitación</at-label>
+  @if(isLoading) {
+    <at-skeleton></at-skeleton>
+  } @else {
+    @if (reservas.length === 0) {
+      <section class="flex flex-col items-center">
+        <at-label classesAditional="mb-2" [size]="'2xl'">No hay reservas para esta habitación</at-label>
+      </section>
+    }
+
+    <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
+      @for (reserva of reservas; track $index) {
+        <!--TODO: this is a organism -->
+        <at-card [width]="'xs'" [classesAditional]="'h-[20rem] w-[20rem]'">
+          <div class="w-full flex flex-col justify-between items-left h-full">
+            <div class="flex flex-col">
+              <section class="flex items-center justify-between">
+                <section class="w-[12.5rem]">
+                  <at-label [size]="'lg'" classesAditional="truncate" [title]="reserva.id">Referencia: {{reserva.id}}</at-label>
+                </section>
+                  <!-- <span class="relative flex h-3.5 w-3.5 cursor-pointer">
+                    <span *ngIf="room.active" [ngClass]="['animate-ping absolute inline-flex opacity-75  w-3.5 h-3.5  rounded-full', room.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
+                    <span [ngClass]="['relative inline-flex  w-3.5 h-3.5 rounded-full', room.active ? 'bg-green-400' : 'bg-red-400']"></span>
+                  </span> -->
+              </section>
+              <span class="text-gray-500 dark:text-gray-400 text-xs">{{reserva.roomDocument?.roomType}}</span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt-4">Desde: <span class="font-bold">{{reserva.initDate}}</span></span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Hasta: <span class="font-bold">{{reserva.initDate}}</span></span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Numero Huespedes: <span class="font-bold"> {{ reserva.guests.length }}</span></span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Precio: <span class="font-bold">{{ reserva.roomDocument?.cost| currency:'$'}}</span></span>
+              <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Impuesto: <span class="font-bold">{{ reserva.roomDocument?.tax }}</span></span>
+            </div>
+          </div>
+        </at-card>
+      }
     </section>
   }
-
-  <section class="grid gap-4 place-items-center grid-cols-auto-fit-xs mt-4 xs:justify-center">
-    @for (reserva of reservas; track $index) {
-      <!--TODO: this is a organism -->
-      <at-card [width]="'xs'" [classesAditional]="'h-[20rem] w-[20rem]'">
-        <div class="w-full flex flex-col justify-between items-left h-full">
-          <div class="flex flex-col">
-            <section class="flex items-center justify-between">
-              <section class="w-[12.5rem]">
-                <at-label [size]="'lg'" classesAditional="truncate" [title]="reserva.id">Referencia: {{reserva.id}}</at-label>
-              </section>
-                <!-- <span class="relative flex h-3.5 w-3.5 cursor-pointer">
-                  <span *ngIf="room.active" [ngClass]="['animate-ping absolute inline-flex opacity-75  w-3.5 h-3.5  rounded-full', room.active ? 'bg-green-400' : 'bg-red-400', 'animate-ping']"></span>
-                  <span [ngClass]="['relative inline-flex  w-3.5 h-3.5 rounded-full', room.active ? 'bg-green-400' : 'bg-red-400']"></span>
-                </span> -->
-            </section>
-            <span class="text-gray-500 dark:text-gray-400 text-xs">{{reserva.roomDocument?.roomType}}()</span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt-4">Desde: <span class="font-bold">{{reserva.initDate}}</span></span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Hasta: <span class="font-bold">{{reserva.initDate}}</span></span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Numero Huespedes: <span class="font-bold"> {{ reserva.guests.length }}</span></span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Precio: <span class="font-bold">{{ reserva.roomDocument?.cost| currency:'$'}}</span></span>
-            <span class="text-gray-500 dark:text-gray-400 line-clamp-1 text-justify mt">Impuesto: <span class="font-bold">{{ reserva.roomDocument?.tax }}</span></span>
-          </div>
-          <div>
-            <at-button [fullWidth]="'full'" [size]="'xs'"  [classesAditional]="'mt-2'" >Ver Detalle</at-button>
-          </div>
-        </div>
-      </at-card>
-    }
-  </section>
 </div>
 
