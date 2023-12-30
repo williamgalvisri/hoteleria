@@ -41,7 +41,7 @@ jobs:
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
@@ -50,13 +50,12 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'app-hoteleria'
-          slot-name: 'production'
-          package: .
+          package: './dist/hoteleria/browser'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_ea76f10d78c54add8d2867bb6a587e11 }}
-  
+
