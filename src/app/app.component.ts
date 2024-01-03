@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { Firestore, collectionData, collection, } from '@angular/fire/firestore';
+import { Flowbite } from '@shared/decortators/flowbite';
 
 
 @Component({

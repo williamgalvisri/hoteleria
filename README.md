@@ -1,27 +1,50 @@
-# Hoteleria
+# Hoteleria Angular 17 Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
+## Description
 
-## Development server
+Hoteleria is an Angular 17 project focused on providing a robust and modern solution for managing hotel-related activities. Whether you're working on a booking system, reservation management, or any other aspect of the hospitality industry, Hoteleria aims to streamline your development process.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Getting Started
 
-## Code scaffolding
+### Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Before you begin, ensure you have the following installed:
 
-## Build
+- Node.js
+- npm or yarn
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Installation
 
-## Running unit tests
+Clone the repository and navigate to the project folder:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+git clone https://github.com/your-username/hoteleria.git
+cd hoteleria
 
-## Running end-to-end tests
+Install the project dependencies:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+npm install  # or yarn install
 
-## Further help
+### Usage
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+#### Development
+
+To start the development server, run:
+
+npm run dev  # or yarn dev
+
+This will launch the project in development mode, and you can access it at `http://localhost:4200`.
+
+#### Build
+
+For production-ready builds, use:
+
+npm run build
+
+The optimized production build will be available in the `dist/` directory.
+
+
+## Acknowledgments
+
+- Thanks to the Angular team for their amazing framework.
+
+Happy coding! 🚀

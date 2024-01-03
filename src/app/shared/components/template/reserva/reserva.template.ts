@@ -17,15 +17,13 @@ import { ID_MODAL_ADD_PERSON } from '@shared/components/utils/modal-keys.const';
 import { GetFormControlPipe } from '@shared/pipes/get-form-control.pipe';
 import { GetTextFromOptionPipe } from '@shared/pipes/get-text-from-options.pipe';
 import { Modal } from 'flowbite';
-import { ReservaFormInterface, ResumenReserva } from './models/reserva.models';
+import { BuildReservaSummary, ReservaFormInterface, ResumenReserva } from './models/reserva.models';
 import { Subscription, of, switchMap, tap } from 'rxjs';
 import { RoomRepository } from '@repositories/room/room.repository';
 import { RepositoryModule } from '@repositories/repository.module';
 import { CreateReservaPayload } from '@infrastructure/payload/reserva.payload';
 import { ReservaRepository } from '@repositories/reserva/reserva.repository';
-import { ReservaTemplateService } from './service/reserva-template.service';
 import { CommonModule, formatDate } from '@angular/common';
-import { SkeletonAtom } from '@shared/components/atoms/skeleton/skeleton.atom';
 
 @Component({
   standalone: true,
@@ -136,13 +134,38 @@ export class ReservaTemplate implements OnInit, AfterViewInit, OnDestroy {
     this.loading = true;
     const dateReserva = this.reservaService.dateReserva;
     const values = {...this.reservaFormGroup.value, hotel: this.hotelId, guests: this.guest, ...dateReserva} as CreateReservaPayload;
-    this.builResumenReserva(values)
+    // build data summary
+    const hotel = this.reservaService.hotel;
+    const roomInfo = this.reservaService.rooms.find(room => room.id === values.room)
+    const guestInfo = values.guests?.[0] ?? new FormPerson();
+    // set-up data sumamry
+    const summaryReserva: BuildReservaSummary = {
+      hotelName: hotel?.name,
+      initDate: formatDate(dateReserva?.initDate ?? new Date(),'yyyy-MM-dd', 'en'),
+      endDate: formatDate(dateReserva?.endDate ?? new Date(),'yyyy-MM-dd', 'en'),
+      numberGuest: `${values.guests.length}`,
+      locationRoom:  `${roomInfo?.location}(${this.getTextFromOptionPipe.transform(roomInfo?.roomType, TYPE_ROOM_OPTION)})`,
+      tax: this.getTextFromOptionPipe.transform(roomInfo?.tax, TAX_OPTION),
+      price: Number(roomInfo?.cost),
+    };
+    this.builResumenReserva(summaryReserva)
+    // request to save reserva
     const saveReserva$ = this.reservaRepository.createReserva(values);
-    const sendEmail$ = of({error: false, message: 'correo enviado'});
+
+    // then send email
+    const sendEmail$ = this.reservaRepository.sendEmail({
+      name: guestInfo.fullName,
+      roomName: summaryReserva.locationRoom,
+      hotelName: summaryReserva.hotelName,
+      price: `${summaryReserva.price}+${summaryReserva.tax}`,
+      numberGuest: `${summaryReserva.numberGuest}`,
+      emailTo: guestInfo.email,
+    })
 
     saveReserva$.pipe(
       switchMap(({response, status}) => {
         this.loading = false;
+        // show summary info
         this.reserved = true
         if(status == 'success') {
           return sendEmail$
@@ -153,18 +176,15 @@ export class ReservaTemplate implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe();
   }
 
-  builResumenReserva(formData: CreateReservaPayload) {
-    const dateReserva = this.reservaService.dateReserva;
-    const hotel = this.reservaService.hotel;
-    const roomInfo = this.reservaService.rooms.find(room => room.id === formData.room)
+  builResumenReserva(summary: BuildReservaSummary) {
     this.resumenReserva = {
-      hotelName: hotel.name,
-      initDate: formatDate(dateReserva?.initDate ?? new Date(),'yyyy-MM-dd', 'en'),
-      endDate: formatDate(dateReserva?.endDate ?? new Date(),'yyyy-MM-dd', 'en'),
-      numberGuest: this.guest.length,
-      locationRoom:`${roomInfo?.location}(${this.getTextFromOptionPipe.transform(roomInfo?.roomType, TYPE_ROOM_OPTION)})`,
-      tax: this.getTextFromOptionPipe.transform(roomInfo?.tax, TAX_OPTION),
-      price: Number(roomInfo?.cost)
+      hotelName: summary.hotelName,
+      initDate: summary.initDate,
+      endDate: summary.endDate,
+      numberGuest: summary.numberGuest,
+      locationRoom: summary.locationRoom,
+      tax: summary.tax,
+      price: summary.price
     }
   }
 

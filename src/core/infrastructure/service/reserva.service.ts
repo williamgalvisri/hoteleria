@@ -4,18 +4,22 @@ import { Firestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnaps
 import { RequestInterface, StatusResponse } from '@infrastructure/base/request.model';
 import { HOTELS, RESERVA, ROOMS } from '@infrastructure/base/collections.const';
 import { Reserva } from '@models/reserva.model';
-import { CreateReservaPayload } from '@infrastructure/payload/reserva.payload';
+import { CreateReservaPayload, SendEmailPayload } from '@infrastructure/payload/reserva.payload';
 import { ReservaMapper } from '@infrastructure/mappers/reserva.mapper';
 import { ReservaDto } from '@infrastructure/dto/reserva.dto';
 import { HotelDto } from '@infrastructure/dto/hotel.dto';
 import { RoomDto } from '@infrastructure/dto/room.dto';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class ReservaService {
   private idRoom: string = '';
+  private apiUrl: string = '';
   firestore: Firestore = inject(Firestore);
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+    this.apiUrl = `https://hoteleria-api.azurewebsites.net`
+  }
 
   getPathRoom(idHotel: string) {
     return `${HOTELS}/${idHotel}/${ROOMS}`
@@ -95,6 +99,15 @@ export class ReservaService {
         return of({ status: 'error' }) as Observable<RequestInterface<Reserva[]>>
       })
     );
+  }
+
+  sendEmail(payload: SendEmailPayload) {
+    return this.http.post<void>(`${this.apiUrl}/send-email`, {...payload})
+        .pipe(
+          map(response => {
+            return { status: StatusResponse.SUCCESS } as RequestInterface<void>
+          })
+        )
   }
 }
 

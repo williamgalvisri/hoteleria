@@ -26,26 +26,28 @@
 
 <!-- Filters template -->
 <ng-template #filterTemplate>
-  <section [formGroup]="filterFormGroup" class="px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4 grid grid-cols-1 gap-2  xl:grid-cols-4">
-    <div class="flex items-center">
-        <span class="inter-text">desde</span>
-        <div class="w-full">
-          <at-input [type]="'date'" id="init-date" [control]="'initDate' | getControl:filterFormGroup" classesAditional="w-full"></at-input>
-        </div>
-        <span class="inter-text">a</span>
-        <div class="w-full">
-          <at-input [type]="'date'" id="end-date" [control]="'endDate' | getControl:filterFormGroup"></at-input>
-        </div>
+  <section [formGroup]="filterFormGroup" class="px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4 grid grid-cols-1 gap-2  xl:grid-cols-5">
+    <div class="filter-container-input">
+      <span class="inter-text col-span-1">desde</span>
+      <div class="w-full col-span-3">
+        <at-input [type]="'date'" [placeholder]="'desde'" id="init-date" [control]="'initDate' | getControl:filterFormGroup" classesAditional="w-full"></at-input>
+      </div>
     </div>
-    <div class="flex items-center">
-      <span class="inter-text">para</span>
-      <div class="w-full">
+    <div class="filter-container-input">
+      <span class="inter-text col-span-1">hasta</span>
+      <div class="w-full col-span-3">
+        <at-input [type]="'date'" id="end-date" [placeholder]="'a'"  [control]="'endDate' | getControl:filterFormGroup"></at-input>
+      </div>
+    </div>
+    <div class="filter-container-input">
+      <span class="inter-text col-span-1">para</span>
+      <div class="w-full col-span-3">
         <at-select [options]="allowPersonOption" [control]="'allowPerson' | getControl:filterFormGroup" [placeholder]="'Cantidad de personas'"></at-select>
       </div>
     </div>
-    <div class="flex items-center">
-      <span class="inter-text">en</span>
-      <div class="w-full">
+    <div class="filter-container-input">
+      <span class="inter-text col-span-1">en</span>
+      <div class="w-full col-span-3">
         <at-select [options]="citiesOptions" [control]="'city' | getControl:filterFormGroup" [placeholder]="'Selecciona el lugar'"></at-select>
       </div>
     </div>

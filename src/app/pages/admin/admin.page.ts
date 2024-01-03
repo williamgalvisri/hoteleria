@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { BreadcrumAtom } from '@shared/components/atoms/breadcrum/breadcrum.atom';
+import { Flowbite } from '@shared/decortators/flowbite';
+import { Modal } from 'flowbite';
 
 @Component({
   standalone: true,
@@ -10,7 +12,7 @@ import { BreadcrumAtom } from '@shared/components/atoms/breadcrum/breadcrum.atom
   templateUrl: './admin.page.html',
   styleUrl: './admin.page.css'
 })
-
+@Flowbite()
 export class AdminPage implements OnInit {
   isOpenSidebar: boolean = false;
   pathActive: string = '';
@@ -27,5 +29,9 @@ export class AdminPage implements OnInit {
 
   navigateTo(path: string) {
     this.router.navigate([path])
+  }
+
+  onShowOrHiddenSideBar() {
+    Modal
   }
 }

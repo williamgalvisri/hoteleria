@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { RequestInterface } from '@infrastructure/base/request.model';
 import { CreateHotelPayload} from '@infrastructure/payload/hotel.payload';
-import { CreateReservaPayload } from '@infrastructure/payload/reserva.payload';
+import { CreateReservaPayload, SendEmailPayload } from '@infrastructure/payload/reserva.payload';
 import { HotelService } from '@infrastructure/service/hotel.service';
 import { ReservaService } from '@infrastructure/service/reserva.service';
 import { Hotel } from '@models/hotel.model';
@@ -27,7 +27,12 @@ export class ReservaImplementation implements ReservaRepository {
   getByDocumentNumberReserva(documentNumber: number): Observable<RequestInterface<Reserva[]>> {
     return this.reservaService.getByDocumentNumberReserva(documentNumber)
   }
+
   getAllReservas(): Observable<RequestInterface<Reserva[]>> {
     return this.reservaService.getAllReservas()
+  }
+
+  sendEmail(payload: SendEmailPayload): Observable<RequestInterface<void>>  {
+    return this.reservaService.sendEmail(payload)
   }
 }

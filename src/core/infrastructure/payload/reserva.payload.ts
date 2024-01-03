@@ -9,3 +9,11 @@ export interface CreateReservaPayload {
   emergencyFullName: string;
   emergencyPhone: number;
 }
+export interface SendEmailPayload {
+  name: string;
+  roomName: string;
+  hotelName: string;
+  price: string;
+  numberGuest: string;
+  emailTo: string;
+}

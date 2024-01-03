@@ -20,9 +20,20 @@ export interface EmailPayload {
 export interface ResumenReserva {
   initDate: string;
   endDate: string;
-  numberGuest: number;
+  numberGuest: string;
   hotelName: string;
   locationRoom: string;
   tax: string;
   price: number
+}
+
+
+export interface BuildReservaSummary {
+  hotelName: string;
+  initDate: string;
+  endDate: string;
+  numberGuest: string;
+  locationRoom: string;
+  tax: string;
+  price: number;
 }

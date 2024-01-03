@@ -129,7 +129,7 @@ export class HotelService {
 
   applyFilters(filters: FiltersHotelPayload): Observable<RequestInterface<Hotel[]>> {
     const collectionRef = collection(this.firestore, HOTELS);
-    const queryHotel = query(collectionRef, where('city', '==', filters.city));
+    const queryHotel = query(collectionRef, where('city', '==', filters.city), where('active', '==', true));
 
     return from(getDocs(queryHotel)).pipe(
       switchMap((snapshots) => {
@@ -142,9 +142,8 @@ export class HotelService {
 
         return from(Promise.all(docs.map(async (doc) => {
           const roomsCollection = collection(doc.ref, ROOMS);
-          const roomsQuery = query(roomsCollection, where('number_persona_allow', '<=', Number(filters.numberPersonaAllow)));
+          const roomsQuery = query(roomsCollection, where('number_persona_allow', '<=', Number(filters.numberPersonaAllow)), where('active', '==', true));
           const roomsSnapshots = await getDocs(roomsQuery);
-
           doc.rooms = roomsSnapshots.docs.map(roomSnapshot => RoomMapper.mapFrom({
             id: roomSnapshot.id,
             ...roomSnapshot.data() as RoomDto
@@ -161,6 +160,7 @@ export class HotelService {
         return { response: mappingHotel, status: StatusResponse.SUCCESS } as RequestInterface<Hotel[]>;
       }),
       catchError((error) => {
+        console.error(error)
         return of({ response: {}, status: StatusResponse.ERROR }) as Observable<RequestInterface<Hotel[]>>;
       })
     );
