@@ -47,11 +47,6 @@ export class LoginFormOrganism implements OnInit {
     private router: Router,
   ) {
     this.optionsUserType = [
-    // {
-    //   value: UserTypeEnum.TRAVELER,
-    //   name: 'userType',
-    //   label: 'Viajero'
-    // },
     {
       value: UserTypeEnum.AGENT,
       name: 'userType',
