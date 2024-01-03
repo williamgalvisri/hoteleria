@@ -61,8 +61,8 @@ export class LoginFormOrganism implements OnInit {
 
   ngOnInit() {
     this.loginFormGroup = this.formBuilder.group({
-      email: ['william@gmail.com', [Validators.required, Validators.email]],
-      password: ['12345678', [Validators.required, Validators.minLength(8)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       userType: [UserTypeEnum.AGENT]
     });
   }
